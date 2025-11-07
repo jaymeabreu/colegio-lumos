@@ -37,7 +37,7 @@ export function AdminPage() {
 
       {/* Tabs Navigation Fixas */}
       <div className="sticky top-16 z-40 border-b bg-card px-6 flex-shrink-0">
-        <nav className="flex space-x-8 py-4">
+        <nav className="flex space-x-8 py-0">
           {[
             { id: 'diarios', label: 'Diários', icon: BookOpen },
             { id: 'comunicados', label: 'Comunicados', icon: MessageSquare },
@@ -51,7 +51,7 @@ export function AdminPage() {
             <button
               key={id}
               onClick={() => setActiveTab(id)}
-              className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap transition-fast ${
+              className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap transition-fast ${
                 activeTab === id
                   ? 'text-primary border-primary'
                   : 'text-muted-foreground border-transparent hover:text-foreground hover:border-border'

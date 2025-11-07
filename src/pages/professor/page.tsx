@@ -393,12 +393,12 @@ export function ProfessorPage() {
 
         {/* Tabs Navigation Fixas */}
         <div className="sticky top-20 z-40 border-b bg-card px-6 flex-shrink-0">
-          <nav className="flex space-x-8 py-4">
+          <nav className="flex space-x-8 py-0">
             {tabsConfig.map(({ id, label, icon: Icon }) => (
               <button
                 key={id}
                 onClick={() => handleTabChange(id)}
-                className={`flex items-center gap-2 py-2 px-1 border-b-2 font-medium text-sm whitespace-nowrap transition-all duration-200 ${
+                className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm whitespace-nowrap transition-all duration-200 ${
                   activeTab === id
                     ? 'text-primary border-primary'
                     : 'text-muted-foreground border-transparent hover:text-foreground hover:border-border'
