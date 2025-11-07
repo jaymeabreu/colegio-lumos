@@ -1,7 +1,7 @@
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
 import { DiarioStatusControls } from '../../../components/shared/DiarioStatusControls';
-import { Diario, Disciplina, Turma, Usuario } from '../../../services/mockData';
+import { mockDataService, Diario, Disciplina, Turma, Usuario } from '../../../services/mockData';
 
 interface DiarioHeaderProps {
   currentDiario: Diario | null;
@@ -43,12 +43,19 @@ export function DiarioHeader({
     );
   }
 
-  const disciplina = (disciplinas || []).find(
-    d => String(d.id) === String(currentDiario.disciplinaId)
+  // 1) tenta achar pelos arrays recebidos nas props
+  const disciplinaFromProps = (disciplinas || []).find(
+    d => d.id === currentDiario.disciplinaId
   );
-  const turma = (turmas || []).find(
-    t => String(t.id) === String(currentDiario.turmaId)
+  const turmaFromProps = (turmas || []).find(
+    t => t.id === currentDiario.turmaId
   );
+
+  // 2) se não achar, busca direto no mockDataService (garantido que tem lá)
+  const disciplina = disciplinaFromProps 
+    || mockDataService.getDisciplinaById(currentDiario.disciplinaId);
+  const turma = turmaFromProps 
+    || mockDataService.getTurmaById(currentDiario.turmaId);
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4">
