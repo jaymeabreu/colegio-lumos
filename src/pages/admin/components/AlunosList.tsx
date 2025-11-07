@@ -430,6 +430,7 @@ export function AlunosList() {
               </DialogHeader>
               <form onSubmit={handleSubmit}>
                 <div className="space-y-6">
+                  
 
                   {/* Dados Básicos */}
                   <div>
@@ -688,6 +689,69 @@ export function AlunosList() {
                     </div>
                   </div>
 
+                  {/* Foto do Perfil */}
+                  <div>
+                    <h4 className="text-lg font-medium mb-4">Foto do Perfil</h4>
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="relative">
+                        {selectedImage ? (
+                          <div className="relative">
+                            <img
+                              src={selectedImage}
+                              alt="Foto do aluno"
+                              className="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
+                            />
+                            <Button
+                              type="button"
+                              variant="destructive"
+                              size="sm"
+                              className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
+                              onClick={removeImage}
+                            >
+                              <X className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="w-32 h-32 rounded-full bg-gray-100 border-4 border-gray-200 flex items-center justify-center">
+                            <Users className="h-12 w-12 text-gray-400" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => fileInputRef.current?.click()}
+                          className="flex items-center gap-2"
+                        >
+                          <Upload className="h-4 w-4" />
+                          Fazer upload de foto
+                        </Button>
+                        {selectedImage && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={removeImage}
+                            className="text-red-600 hover:text-red-700"
+                          >
+                            Remover foto
+                          </Button>
+                        )}
+                      </div>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/jpeg,image/jpg,image/png,image/webp"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                      />
+                      <p className="text-xs text-gray-500 text-center">
+                        Formatos aceitos: JPG, PNG, WEBP. Máximo 5MB.<br/>
+                        A imagem será automaticamente otimizada.
+                      </p>
+                    </div>
+                  </div>
+
                   {/* Criar Usuário */}
                   {!editingAluno && (
                     <div>
@@ -755,69 +819,6 @@ export function AlunosList() {
                         )}
                       </div>
                     </div>
-
-                    {/* Foto do Perfil */}
-                  <div>
-                    <h4 className="text-lg font-medium mb-4">Foto do Perfil</h4>
-                    <div className="flex flex-col items-center gap-4">
-                      <div className="relative">
-                        {selectedImage ? (
-                          <div className="relative">
-                            <img
-                              src={selectedImage}
-                              alt="Foto do aluno"
-                              className="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
-                            />
-                            <Button
-                              type="button"
-                              variant="destructive"
-                              size="sm"
-                              className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
-                              onClick={removeImage}
-                            >
-                              <X className="h-3 w-3" />
-                            </Button>
-                          </div>
-                        ) : (
-                          <div className="w-32 h-32 rounded-full bg-gray-100 border-4 border-gray-200 flex items-center justify-center">
-                            <Users className="h-12 w-12 text-gray-400" />
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => fileInputRef.current?.click()}
-                          className="flex items-center gap-2"
-                        >
-                          <Upload className="h-4 w-4" />
-                          Fazer upload de foto
-                        </Button>
-                        {selectedImage && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={removeImage}
-                            className="text-red-600 hover:text-red-700"
-                          >
-                            Remover foto
-                          </Button>
-                        )}
-                      </div>
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/jpeg,image/jpg,image/png,image/webp"
-                        onChange={handleImageUpload}
-                        className="hidden"
-                      />
-                      <p className="text-xs text-gray-500 text-center">
-                        Formatos aceitos: JPG, PNG, WEBP. Máximo 5MB.<br/>
-                        A imagem será automaticamente otimizada.
-                      </p>
-                    </div>
-                  </div>
                   )}
                 </div>
                 <DialogFooter className="mt-6">
