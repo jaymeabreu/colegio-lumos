@@ -1,12 +1,28 @@
 import { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2, MessageSquare, Calendar, Users, User } from 'lucide-react';
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import { Label } from '../../../components/ui/label';
 import { Textarea } from '../../../components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../../../components/ui/dialog';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '../../../components/ui/select';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '../../../components/ui/dialog';
+import { Badge } from '../../../components/ui/badge';
+
 import { mockDataService, Recado, Turma, Aluno } from '../../../services/mockData';
 import { authService } from '../../../services/auth';
 
@@ -18,6 +34,7 @@ export function RecadosTab() {
   const [editingRecado, setEditingRecado] = useState<Recado | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [loading, setLoading] = useState(true);
+
   const [formData, setFormData] = useState({
     titulo: '',
     mensagem: '',
@@ -27,9 +44,13 @@ export function RecadosTab() {
 
   const { user } = authService.getAuthState();
 
+  /* -------------------------------------------------------------------------- */
+  /*                               Carregamento                                 */
+  /* -------------------------------------------------------------------------- */
   useEffect(() => {
     loadData();
-    
+
+    // Escutar eventos de atualização de dados
     const handleDataUpdate = () => {
       console.log('Evento de atualização de dados recebido');
       loadData();
@@ -37,20 +58,20 @@ export function RecadosTab() {
 
     const handleRecadoCreated = (event: CustomEvent) => {
       console.log('Evento de recado criado recebido:', event.detail);
-      if (event.detail.professorId === user?.professorId) {
+      if (user && event.detail.professorId === user.id) {
         loadData();
       }
     };
 
     const handleRecadoUpdated = (event: CustomEvent) => {
       console.log('Evento de recado atualizado recebido:', event.detail);
-      if (event.detail.professorId === user?.professorId) {
+      if (user && event.detail.professorId === user.id) {
         loadData();
       }
     };
 
-    const handleRecadoDeleted = (event: CustomEvent) => {
-      console.log('Evento de recado excluído recebido:', event.detail);
+    const handleRecadoDeleted = () => {
+      console.log('Evento de recado excluído recebido');
       loadData();
     };
 
@@ -65,25 +86,25 @@ export function RecadosTab() {
       window.removeEventListener('recadoUpdated', handleRecadoUpdated as EventListener);
       window.removeEventListener('recadoDeleted', handleRecadoDeleted as EventListener);
     };
-  }, [user?.professorId]);
+  }, [user?.id]);
 
-  const loadData = async () => {
+  const loadData = () => {
     try {
       console.log('Carregando dados dos recados...');
       setLoading(true);
-      
-      if (user?.professorId) {
-        const recadosData = mockDataService.getRecadosByProfessor(user.professorId);
+
+      if (user) {
+        // Carrega recados do professor logado (usando o id do usuário)
+        const recadosData = mockDataService.getRecadosByProfessor(user.id);
         console.log('Recados carregados:', recadosData);
         setRecados(
           recadosData.sort(
             (a, b) =>
-              new Date(b.dataEnvio).getTime() -
-              new Date(a.dataEnvio).getTime()
+              new Date(b.dataEnvio).getTime() - new Date(a.dataEnvio).getTime()
           )
         );
       }
-      
+
       const turmasData = mockDataService.getTurmas();
       console.log('Turmas carregadas:', turmasData);
       setTurmas(turmasData);
@@ -96,7 +117,7 @@ export function RecadosTab() {
 
   const loadAlunosByTurma = (turmaId: string) => {
     if (turmaId) {
-      const alunosData = mockDataService.getAlunosByTurma(parseInt(turmaId));
+      const alunosData = mockDataService.getAlunosByTurma(parseInt(turmaId, 10));
       console.log('Alunos da turma carregados:', alunosData);
       setAlunos(alunosData);
     } else {
@@ -104,9 +125,12 @@ export function RecadosTab() {
     }
   };
 
+  /* -------------------------------------------------------------------------- */
+  /*                              Manipulação Form                              */
+  /* -------------------------------------------------------------------------- */
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.titulo.trim() || !formData.mensagem.trim() || !formData.turmaId) {
       alert('Por favor, preencha todos os campos obrigatórios.');
       return;
@@ -115,19 +139,16 @@ export function RecadosTab() {
     setIsSubmitting(true);
 
     try {
-      const turma = turmas.find(t => t.id === parseInt(formData.turmaId));
+      const turma = turmas.find(t => t.id === parseInt(formData.turmaId, 10));
       const aluno = formData.alunoId
-        ? alunos.find(a => a.id === parseInt(formData.alunoId))
+        ? alunos.find(a => a.id === parseInt(formData.alunoId, 10))
         : null;
 
       console.log('Dados do formulário:', {
-        titulo: formData.titulo,
-        mensagem: formData.mensagem,
-        turmaId: formData.turmaId,
-        alunoId: formData.alunoId,
+        ...formData,
         turma,
         aluno,
-        professorId: user?.professorId
+        professorId: user?.id
       });
 
       if (editingRecado) {
@@ -135,13 +156,14 @@ export function RecadosTab() {
         const updatedRecado = mockDataService.updateRecado(editingRecado.id, {
           titulo: formData.titulo.trim(),
           mensagem: formData.mensagem.trim(),
-          turmaId: parseInt(formData.turmaId),
+          turmaId: parseInt(formData.turmaId, 10),
           turmaNome: turma?.nome || '',
-          alunoId: formData.alunoId ? parseInt(formData.alunoId) : undefined,
+          alunoId: formData.alunoId ? parseInt(formData.alunoId, 10) : undefined,
           alunoNome: aluno?.nome || undefined
         });
+
         console.log('Recado atualizado:', updatedRecado);
-        
+
         if (updatedRecado) {
           alert('Recado atualizado com sucesso!');
           setRecados(prev =>
@@ -155,16 +177,16 @@ export function RecadosTab() {
         const novoRecado = mockDataService.createRecado({
           titulo: formData.titulo.trim(),
           mensagem: formData.mensagem.trim(),
-          professorId: user?.professorId || 1,
+          professorId: user?.id || 1,
           professorNome: user?.nome || 'Professor',
-          turmaId: parseInt(formData.turmaId),
+          turmaId: parseInt(formData.turmaId, 10),
           turmaNome: turma?.nome || '',
-          alunoId: formData.alunoId ? parseInt(formData.alunoId) : undefined,
+          alunoId: formData.alunoId ? parseInt(formData.alunoId, 10) : undefined,
           alunoNome: aluno?.nome || undefined,
           dataEnvio: new Date().toISOString().split('T')[0]
         });
         console.log('Recado criado:', novoRecado);
-        
+
         if (novoRecado) {
           alert('Recado enviado com sucesso!');
           setRecados(prev => [novoRecado, ...prev]);
@@ -172,7 +194,7 @@ export function RecadosTab() {
           throw new Error('Falha ao criar recado');
         }
       }
-      
+
       handleCloseDialog();
 
       setTimeout(() => {
@@ -195,18 +217,18 @@ export function RecadosTab() {
       turmaId: recado.turmaId.toString(),
       alunoId: recado.alunoId?.toString() || ''
     });
-    
+
     loadAlunosByTurma(recado.turmaId.toString());
     setIsDialogOpen(true);
   };
 
-  const handleDelete = async (id: number) => {
+  const handleDelete = (id: number) => {
     if (window.confirm('Tem certeza que deseja excluir este recado?')) {
       try {
         console.log('Excluindo recado:', id);
         const success = mockDataService.deleteRecado(id);
         console.log('Resultado da exclusão:', success);
-        
+
         if (success) {
           alert('Recado excluído com sucesso!');
           setRecados(prev => prev.filter(r => r.id !== id));
@@ -245,6 +267,9 @@ export function RecadosTab() {
     return new Date(dateString).toLocaleDateString('pt-BR');
   };
 
+  /* -------------------------------------------------------------------------- */
+  /*                                   Render                                   */
+  /* -------------------------------------------------------------------------- */
   return (
     <Card>
       <CardHeader>
@@ -252,19 +277,28 @@ export function RecadosTab() {
           <div>
             <CardTitle>Recados</CardTitle>
             <CardDescription>
-              Envie recados individuais ou para toda a turma
+              Envie recados para suas turmas e alunos
             </CardDescription>
           </div>
 
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button onClick={handleCloseDialog} className="flex items-center gap-2">
+              <Button
+                onClick={() => {
+                  // se for um novo recado, garante form limpo
+                  if (!editingRecado) {
+                    handleCloseDialog();
+                    setIsDialogOpen(true);
+                  }
+                }}
+                className="flex items-center gap-2 whitespace-nowrap"
+              >
                 <Plus className="h-4 w-4" />
                 <span className="sm:hidden">Novo</span>
                 <span className="hidden sm:inline">Novo Recado</span>
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-[95vw] lg:max-w-[800px] max-h-[95vh] overflow-y-auto">
+            <DialogContent className="max-w-[95vw] lg:max-w-[800px]">
               <DialogHeader>
                 <DialogTitle>
                   {editingRecado ? 'Editar Recado' : 'Novo Recado'}
@@ -352,10 +386,7 @@ export function RecadosTab() {
                     id="mensagem"
                     value={formData.mensagem}
                     onChange={e =>
-                      setFormData(prev => ({
-                        ...prev,
-                        mensagem: e.target.value
-                      }))
+                      setFormData(prev => ({ ...prev, mensagem: e.target.value }))
                     }
                     placeholder="Digite a mensagem do recado"
                     rows={6}
@@ -364,21 +395,16 @@ export function RecadosTab() {
                   />
                 </div>
 
-                <div className="flex justify-end gap-2 pt-4 border-t">
+                <div className="flex justify-end gap-2 pt-4">
                   <Button
                     type="button"
                     variant="outline"
                     onClick={handleCloseDialog}
-                    className="btn btn-outline btn-md"
                     disabled={isSubmitting}
                   >
                     Cancelar
                   </Button>
-                  <Button
-                    type="submit"
-                    className="btn btn-primary btn-md"
-                    disabled={isSubmitting}
-                  >
+                  <Button type="submit" disabled={isSubmitting}>
                     {isSubmitting
                       ? 'Salvando...'
                       : editingRecado
@@ -396,18 +422,18 @@ export function RecadosTab() {
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
               <p className="text-muted-foreground">Carregando recados...</p>
             </div>
           </div>
         ) : recados.length === 0 ? (
-          <div className="text-center py-8 text-muted-foreground">
+          <div className="text-center py-10 text-muted-foreground">
             <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
               <MessageSquare className="h-8 w-8 opacity-60" />
             </div>
             <p className="font-medium mb-1">Nenhum recado encontrado</p>
             <p className="text-sm">
-              Crie o primeiro recado para suas turmas ou alunos.
+              Crie o primeiro recado para suas turmas.
             </p>
           </div>
         ) : (
@@ -415,58 +441,74 @@ export function RecadosTab() {
             {recados.map(recado => (
               <div
                 key={recado.id}
-                className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 p-4 border rounded-lg"
+                className="p-4 border rounded-lg shadow-sm bg-background flex flex-col gap-3"
               >
-                <div className="flex-1">
-                  <h3 className="font-medium">{recado.titulo}</h3>
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-1 text-sm text-muted-foreground">
-                    <span className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3" />
-                      {formatDate(recado.dataEnvio)}
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <Users className="h-3 w-3" />
-                      {recado.turmaNome}
-                    </span>
-                    {recado.alunoNome && (
-                      <span className="flex items-center gap-1">
-                        <User className="h-3 w-3" />
-                        {recado.alunoNome}
-                      </span>
-                    )}
-                    <span className="inline-flex items-center px-2 py-1 text-[11px] rounded-full border border-border text-muted-foreground">
+                <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <h4 className="font-medium text-base">
+                        {recado.titulo}
+                      </h4>
                       {recado.alunoId ? (
-                        <>
+                        <Badge variant="secondary" className="text-[11px]">
                           <User className="h-3 w-3 mr-1" />
                           Individual
-                        </>
+                        </Badge>
                       ) : (
-                        <>
+                        <Badge
+                          variant="outline"
+                          className="text-[11px] inline-flex items-center"
+                        >
                           <Users className="h-3 w-3 mr-1" />
                           Turma
-                        </>
+                        </Badge>
                       )}
-                    </span>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-4 text-xs text-muted-foreground">
+                      <div className="flex items-center gap-1">
+                        <Calendar className="h-3 w-3" />
+                        <span>{formatDate(recado.dataEnvio)}</span>
+                      </div>
+                      <div className="flex items-center gap-1">
+                        <Users className="h-3 w-3" />
+                        <span>{recado.turmaNome}</span>
+                      </div>
+                      {recado.alunoNome && (
+                        <div className="flex items-center gap-1">
+                          <User className="h-3 w-3" />
+                          <span>{recado.alunoNome}</span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <Button
+                      variant="outline"
+                      size="none"
+                      className="h-8 w-8 p-0 inline-flex items-center justify-center"
+                      onClick={() => handleEdit(recado)}
+                      title="Editar recado"
+                    >
+                      <Edit className="h-4 w-4" />
+                    </Button>
+                    <Button
+                      variant="destructive"
+                      size="none"
+                      className="h-8 w-8 p-0 inline-flex items-center justify-center"
+                      onClick={() => handleDelete(recado.id)}
+                      title="Excluir recado"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleEdit(recado)}
-                    title="Editar recado"
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant="destructive"
-                    size="sm"
-                    onClick={() => handleDelete(recado.id)}
-                    title="Excluir recado"
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
+                <div>
+                  <p className="text-sm text-foreground whitespace-pre-wrap">
+                    {recado.mensagem}
+                  </p>
                 </div>
               </div>
             ))}
