@@ -430,68 +430,6 @@ export function AlunosList() {
               </DialogHeader>
               <form onSubmit={handleSubmit}>
                 <div className="space-y-6">
-                  {/* Foto do Perfil */}
-                  <div>
-                    <h4 className="text-lg font-medium mb-4">Foto do Perfil</h4>
-                    <div className="flex flex-col items-center gap-4">
-                      <div className="relative">
-                        {selectedImage ? (
-                          <div className="relative">
-                            <img
-                              src={selectedImage}
-                              alt="Foto do aluno"
-                              className="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
-                            />
-                            <Button
-                              type="button"
-                              variant="destructive"
-                              size="sm"
-                              className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
-                              onClick={removeImage}
-                            >
-                              <X className="h-3 w-3" />
-                            </Button>
-                          </div>
-                        ) : (
-                          <div className="w-32 h-32 rounded-full bg-gray-100 border-4 border-gray-200 flex items-center justify-center">
-                            <Users className="h-12 w-12 text-gray-400" />
-                          </div>
-                        )}
-                      </div>
-                      <div className="flex gap-2">
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => fileInputRef.current?.click()}
-                          className="flex items-center gap-2"
-                        >
-                          <Upload className="h-4 w-4" />
-                          Fazer upload de foto
-                        </Button>
-                        {selectedImage && (
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={removeImage}
-                            className="text-red-600 hover:text-red-700"
-                          >
-                            Remover foto
-                          </Button>
-                        )}
-                      </div>
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/jpeg,image/jpg,image/png,image/webp"
-                        onChange={handleImageUpload}
-                        className="hidden"
-                      />
-                      <p className="text-xs text-gray-500 text-center">
-                        Formatos aceitos: JPG, PNG, WEBP. Máximo 5MB.<br/>
-                        A imagem será automaticamente otimizada.
-                      </p>
-                    </div>
-                  </div>
 
                   {/* Dados Básicos */}
                   <div>
@@ -526,22 +464,13 @@ export function AlunosList() {
                         />
                       </div>
                       <div>
-                        <div className="relative">
-  {!formData.dataNascimento && (
-    <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">
-      Data de nascimento
-    </span>
-  )}
-  <Input
-    id="dataNascimento"
-    type="date"
-    value={formData.dataNascimento}
-    onChange={(e) =>
-      setFormData({ ...formData, dataNascimento: e.target.value })
-    }
-  />
-</div>
-
+                        <Input
+                          id="dataNascimento"
+                          type="date"
+                          value={formData.dataNascimento}
+                          onChange={(e) => setFormData({ ...formData, dataNascimento: e.target.value })}
+                          placeholder="Data de Nascimento"
+                        />
                       </div>
                       <div>
                         <Input
@@ -663,19 +592,17 @@ export function AlunosList() {
                     <h4 className="text-lg font-medium mb-4">Dados do Responsável</h4>
                     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                       <div>
-                        <Label htmlFor="nomeResponsavel">Nome do Responsável</Label>
                         <Input
                           id="nomeResponsavel"
                           value={formData.nomeResponsavel}
                           onChange={(e) => setFormData({ ...formData, nomeResponsavel: e.target.value })}
-                          placeholder="Maria Silva Santos"
+                          placeholder="Nome do Responsável"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="parentesco">Parentesco</Label>
                         <Select value={formData.parentesco} onValueChange={(value) => setFormData({ ...formData, parentesco: value })}>
                           <SelectTrigger>
-                            <SelectValue placeholder="Selecione" />
+                            <SelectValue placeholder="Parentesco" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="Pai">Pai</SelectItem>
@@ -689,22 +616,20 @@ export function AlunosList() {
                         </Select>
                       </div>
                       <div>
-                        <Label htmlFor="contatoResponsavel">Telefone do Responsável</Label>
                         <Input
                           id="contatoResponsavel"
                           value={formData.contatoResponsavel}
                           onChange={(e) => setFormData({ ...formData, contatoResponsavel: e.target.value })}
-                          placeholder="(11) 98888-8888"
+                          placeholder="Telefone do Responsável"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="emailResponsavel">Email do Responsável</Label>
                         <Input
                           id="emailResponsavel"
                           type="email"
                           value={formData.emailResponsavel}
                           onChange={(e) => setFormData({ ...formData, emailResponsavel: e.target.value })}
-                          placeholder="maria.santos@email.com"
+                          placeholder="E-mail do Responsável"
                         />
                       </div>
                     </div>
@@ -715,10 +640,9 @@ export function AlunosList() {
                     <h4 className="text-lg font-medium mb-4">Dados Acadêmicos</h4>
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
                       <div>
-                        <Label htmlFor="turma">Turma</Label>
                         <Select value={formData.turmaId} onValueChange={(value) => setFormData({ ...formData, turmaId: value })}>
                           <SelectTrigger>
-                            <SelectValue placeholder="Selecione uma turma" />
+                            <SelectValue placeholder="Turma" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="all">Todas as turmas</SelectItem>
@@ -731,22 +655,20 @@ export function AlunosList() {
                         </Select>
                       </div>
                       <div>
-                        <Label htmlFor="anoLetivo">Ano Letivo</Label>
                         <Input
                           id="anoLetivo"
                           value={formData.anoLetivo}
                           onChange={(e) => setFormData({ ...formData, anoLetivo: e.target.value })}
-                          placeholder="2025"
+                          placeholder="Ano Letivo"
                         />
                       </div>
                       <div>
                         <Label htmlFor="situacao">Situação</Label>
                         <Select value={formData.situacao} onValueChange={(value) => setFormData({ ...formData, situacao: value })}>
                           <SelectTrigger>
-                            <SelectValue placeholder="Selecione" />
+                            <SelectValue placeholder="Situação" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="all">Todas as situações</SelectItem>
                             <SelectItem value="Ativo">Ativo</SelectItem>
                             <SelectItem value="Inativo">Inativo</SelectItem>
                             <SelectItem value="Transferido">Transferido</SelectItem>
@@ -756,7 +678,6 @@ export function AlunosList() {
                       </div>
                     </div>
                     <div className="mt-4">
-                      <Label htmlFor="observacoes">Observações</Label>
                       <Textarea
                         id="observacoes"
                         value={formData.observacoes}
@@ -785,15 +706,13 @@ export function AlunosList() {
                         {formData.criarUsuario && (
                           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                             <div>
-                              <Label>Email de Login</Label>
                               <Input
                                 value={formData.email}
                                 disabled
-                                placeholder="Será usado o email principal"
+                                placeholder="Email de Login"
                               />
                             </div>
                             <div>
-                              <Label htmlFor="senhaUsuario">Senha Initial *</Label>
                               <div className="flex gap-2">
                                 <div className="relative flex-1">
                                   <Input
@@ -801,7 +720,7 @@ export function AlunosList() {
                                     type={showPassword ? "text" : "password"}
                                     value={formData.senhaUsuario}
                                     onChange={(e) => setFormData({ ...formData, senhaUsuario: e.target.value })}
-                                    placeholder="Senha temporária"
+                                    placeholder="Senha inicial"
                                     className="pr-20"
                                     required
                                   />
@@ -809,7 +728,7 @@ export function AlunosList() {
                                     <Button
                                       type="button"
                                       variant="ghost"
-                                      size="sm"
+                                      size="none"
                                       className="h-6 w-6 p-0"
                                       onClick={() => setShowPassword(!showPassword)}
                                     >
@@ -818,7 +737,7 @@ export function AlunosList() {
                                     <Button
                                       type="button"
                                       variant="ghost"
-                                      size="sm"
+                                      size="none"
                                       className="h-6 w-6 p-0"
                                       onClick={copiarSenha}
                                       disabled={!formData.senhaUsuario}
@@ -836,6 +755,69 @@ export function AlunosList() {
                         )}
                       </div>
                     </div>
+
+                    {/* Foto do Perfil */}
+                  <div>
+                    <h4 className="text-lg font-medium mb-4">Foto do Perfil</h4>
+                    <div className="flex flex-col items-center gap-4">
+                      <div className="relative">
+                        {selectedImage ? (
+                          <div className="relative">
+                            <img
+                              src={selectedImage}
+                              alt="Foto do aluno"
+                              className="w-32 h-32 rounded-full object-cover border-4 border-gray-200"
+                            />
+                            <Button
+                              type="button"
+                              variant="destructive"
+                              size="sm"
+                              className="absolute -top-2 -right-2 h-6 w-6 rounded-full p-0"
+                              onClick={removeImage}
+                            >
+                              <X className="h-3 w-3" />
+                            </Button>
+                          </div>
+                        ) : (
+                          <div className="w-32 h-32 rounded-full bg-gray-100 border-4 border-gray-200 flex items-center justify-center">
+                            <Users className="h-12 w-12 text-gray-400" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => fileInputRef.current?.click()}
+                          className="flex items-center gap-2"
+                        >
+                          <Upload className="h-4 w-4" />
+                          Fazer upload de foto
+                        </Button>
+                        {selectedImage && (
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={removeImage}
+                            className="text-red-600 hover:text-red-700"
+                          >
+                            Remover foto
+                          </Button>
+                        )}
+                      </div>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/jpeg,image/jpg,image/png,image/webp"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                      />
+                      <p className="text-xs text-gray-500 text-center">
+                        Formatos aceitos: JPG, PNG, WEBP. Máximo 5MB.<br/>
+                        A imagem será automaticamente otimizada.
+                      </p>
+                    </div>
+                  </div>
                   )}
                 </div>
                 <DialogFooter className="mt-6">
