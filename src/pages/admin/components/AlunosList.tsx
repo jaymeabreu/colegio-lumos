@@ -526,13 +526,22 @@ export function AlunosList() {
                         />
                       </div>
                       <div>
-                        <Input
-                          id="dataNascimento"
-                          type="date"
-                          value={formData.dataNascimento}
-                          onChange={(e) => setFormData({ ...formData, dataNascimento: e.target.value })}
-                          placeholder="Data de Nascimento"
-                        />
+                        <div className="relative">
+  {!formData.dataNascimento && (
+    <span className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-sm text-slate-400">
+      Data de nascimento
+    </span>
+  )}
+  <Input
+    id="dataNascimento"
+    type="date"
+    value={formData.dataNascimento}
+    onChange={(e) =>
+      setFormData({ ...formData, dataNascimento: e.target.value })
+    }
+  />
+</div>
+
                       </div>
                       <div>
                         <Input
