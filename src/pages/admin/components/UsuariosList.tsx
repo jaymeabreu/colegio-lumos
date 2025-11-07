@@ -250,23 +250,25 @@ export function UsuariosList() {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Button
-                  variant="outline"
-                  
-                  className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 btn btn-outline h-10 w-10 h-8 w-8"
-                  onClick={() => handleEdit(usuario)}
-                >
-                  <Edit className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="destructive"
-                  
-                  className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 btn btn-destructive h-10 w-10 h-8 w-8"
-                  onClick={() => handleDelete(usuario.id)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
+  <Button
+    variant="outline"
+    size="none" // 👈 não vai receber btn-md / btn-sm / btn-lg
+    className="h-8 w-8 p-0 inline-flex items-center justify-center"
+    onClick={() => handleEdit(usuario)}
+  >
+    <Edit className="h-4 w-4" />
+  </Button>
+
+  <Button
+    variant="destructive"
+    size="none" // 👈 idem
+    className="h-8 w-8 p-0 inline-flex items-center justify-center"
+    onClick={() => handleDelete(usuario.id)}
+  >
+    <Trash2 className="h-4 w-4" />
+  </Button>
+</div>
+
             </div>
           ))}
           

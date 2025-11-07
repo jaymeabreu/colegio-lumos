@@ -9,7 +9,7 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: "btn btn-primary",
-        destructive: "btn btn-destructive", 
+        destructive: "btn btn-destructive",
         outline: "btn btn-outline",
         secondary: "btn btn-secondary",
         ghost: "btn btn-ghost",
@@ -17,9 +17,10 @@ const buttonVariants = cva(
       },
       size: {
         default: "btn-md",
-        sm: "btn-sm", 
+        sm: "btn-sm",
         lg: "btn-lg",
         icon: "h-10 w-10",
+        none: "",           // 👈 novo size “sem estilo de tamanho”
       },
     },
     defaultVariants: {
@@ -28,6 +29,7 @@ const buttonVariants = cva(
     },
   }
 )
+
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
