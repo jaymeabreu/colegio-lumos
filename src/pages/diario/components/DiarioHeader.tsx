@@ -1,27 +1,22 @@
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
 import { DiarioStatusControls } from '../../../components/shared/DiarioStatusControls';
-import { mockDataService, Diario, Disciplina, Turma, Usuario } from '../../../services/mockData';
+import { mockDataService, Diario, Usuario } from '../../../services/mockData';
 
 interface DiarioHeaderProps {
   currentDiario: Diario | null;
-  disciplinas: Disciplina[];
-  turmas: Turma[];
   currentUser: Usuario | null;
   onBackToDiarios: () => void;
   onStatusChange: () => void;
 }
 
 export function DiarioHeader({ 
-  currentDiario, 
-  disciplinas, 
-  turmas, 
+  currentDiario,
   currentUser,
   onBackToDiarios,
   onStatusChange 
 }: DiarioHeaderProps) {
   if (!currentDiario) {
-    console.log('HEADER: currentDiario é null');
     return (
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
@@ -44,33 +39,19 @@ export function DiarioHeader({
     );
   }
 
-  // LOG GERAL
-  console.log('HEADER: currentDiario recebido =>', currentDiario);
-  console.log('HEADER: ids do diário =>', {
-    disciplinaId: currentDiario.disciplinaId,
-    turmaId: currentDiario.turmaId,
-  });
-  console.log('HEADER: disciplinas props =>', disciplinas);
-  console.log('HEADER: turmas props =>', turmas);
+  // Garante que estamos usando a versão "oficial" do diário do mockData
+  const diarioCompleto = mockDataService.getDiarioById(currentDiario.id) || currentDiario;
 
-  const disciplinaFromProps = (disciplinas || []).find(
-    d => d.id === currentDiario.disciplinaId
+  // Puxa TODAS as disciplinas/turmas direto do mockData
+  const todasDisciplinas = mockDataService.getDisciplinas();
+  const todasTurmas = mockDataService.getTurmas();
+
+  const disciplina = todasDisciplinas.find(
+    d => String(d.id) === String(diarioCompleto.disciplinaId)
   );
-  const turmaFromProps = (turmas || []).find(
-    t => t.id === currentDiario.turmaId
+  const turma = todasTurmas.find(
+    t => String(t.id) === String(diarioCompleto.turmaId)
   );
-
-  console.log('HEADER: disciplinaFromProps =>', disciplinaFromProps);
-  console.log('HEADER: turmaFromProps =>', turmaFromProps);
-
-  const disciplinaFromMock = mockDataService.getDisciplinaById(currentDiario.disciplinaId);
-  const turmaFromMock = mockDataService.getTurmaById(currentDiario.turmaId);
-
-  console.log('HEADER: disciplinaFromMock =>', disciplinaFromMock);
-  console.log('HEADER: turmaFromMock =>', turmaFromMock);
-
-  const disciplina = disciplinaFromProps || disciplinaFromMock;
-  const turma = turmaFromProps || turmaFromMock;
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4">
@@ -87,8 +68,9 @@ export function DiarioHeader({
           </Button>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
-              {currentDiario.nome}
+              {diarioCompleto.nome}
             </h1>
+
             <div className="flex items-center gap-2 mt-1">
               <span className="text-sm font-medium text-primary">
                 {disciplina?.nome || 'Disciplina'}
@@ -99,7 +81,7 @@ export function DiarioHeader({
               </span>
               <span className="text-sm text-muted-foreground">•</span>
               <span className="text-sm text-muted-foreground">
-                {currentDiario.bimestre}º Bimestre
+                {diarioCompleto.bimestre}º Bimestre
               </span>
             </div>
           </div>
@@ -108,7 +90,7 @@ export function DiarioHeader({
         {currentUser && (
           <div className="flex items-center gap-3">
             <DiarioStatusControls 
-              diario={currentDiario}
+              diario={diarioCompleto}
               currentUser={currentUser}
               onStatusChange={onStatusChange}
               compact={true}
