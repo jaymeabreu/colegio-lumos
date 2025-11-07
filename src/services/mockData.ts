@@ -193,264 +193,49 @@ class MockDataService {
   private static initialized = false; // Flag estática para evitar re-seed
 
   private defaultData = {
-    usuarios: [
-      {
-        id: 1,
-        nome: 'Coordenador Sistema',
-        email: 'coordenador@demo.com',
-        papel: 'COORDENADOR' as const,
-        createdAt: '2025-01-01T00:00:00Z',
-        updatedAt: '2025-01-01T00:00:00Z'
-      },
-      {
-        id: 2,
-        nome: 'Professor História',
-        email: 'prof@demo.com',
-        papel: 'PROFESSOR' as const,
-        professorId: 1,
-        createdAt: '2025-01-01T00:00:00Z',
-        updatedAt: '2025-01-01T00:00:00Z'
-      },
-      {
-        id: 3,
-        nome: 'Ana Clara Santos',
-        email: 'aluno@demo.com',
-        papel: 'ALUNO' as const,
-        alunoId: 1,
-        createdAt: '2025-01-01T00:00:00Z',
-        updatedAt: '2025-01-01T00:00:00Z'
-      }
-    ] as Usuario[],
-    turmas: [
-      {
-        id: 1,
-        nome: '6º Ano - Manhã',
-        anoLetivo: '2025',
-        turno: 'Manhã',
-        createdAt: '2025-01-01T00:00:00Z',
-        updatedAt: '2025-01-01T00:00:00Z'
-      }
-    ] as Turma[],
-    disciplinas: [
-      {
-        id: 1,
-        nome: 'História',
-        cargaHoraria: 80,
-        createdAt: '2025-01-01T00:00:00Z',
-        updatedAt: '2025-01-01T00:00:00Z'
-      },
-      {
-        id: 2,
-        nome: 'Matemática',
-        cargaHoraria: 120,
-        createdAt: '2025-01-01T00:00:00Z',
-        updatedAt: '2025-01-01T00:00:00Z'
-      },
-      {
-        id: 3,
-        nome: 'Português',
-        cargaHoraria: 120,
-        createdAt: '2025-01-01T00:00:00Z',
-        updatedAt: '2025-01-01T00:00:00Z'
-      },
-      {
-        id: 4,
-        nome: 'Ciências',
-        cargaHoraria: 80,
-        createdAt: '2025-01-01T00:00:00Z',
-        updatedAt: '2025-01-01T00:00:00Z'
-      },
-      {
-        id: 5,
-        nome: 'Geografia',
-        cargaHoraria: 80,
-        createdAt: '2025-01-01T00:00:00Z',
-        updatedAt: '2025-01-01T00:00:00Z'
-      }
-    ] as Disciplina[],
-    professores: [
-      {
-        id: 1,
-        nome: 'Professor História',
-        email: 'prof.historia@escola.com',
-        contato: '(11) 99999-1234',
-        formacao: 'Graduação',
-        especializacao: 'Licenciatura em História',
-        situacao: 'Ativo',
-        disciplinasIds: [1],
-        createdAt: '2025-01-01T00:00:00Z',
-        updatedAt: '2025-01-01T00:00:00Z'
-      }
-    ] as Professor[],
-    diarios: [
-      {
-        id: 1,
-        nome: 'História - 6º Ano Manhã',
-        disciplinaId: 1,
-        turmaId: 1,
-        professorId: 1,
-        bimestre: 1,
-        dataInicio: '2025-02-01',
-        dataTermino: '2025-04-30',
-        status: 'PENDENTE' as const,
-        historicoStatus: [
-          {
-            status: 'PENDENTE',
-            data: '2025-01-01T00:00:00Z',
-            usuario: 'Sistema',
-            observacao: 'Diário criado'
-          }
-        ],
-        createdAt: '2025-01-01T00:00:00Z',
-        updatedAt: '2025-01-01T00:00:00Z'
-      }
-    ] as Diario[],
-    alunos: [
-      { id: 1, nome: "Ana Clara Santos", matricula: "2025001", contato: "(11) 99999-1111", email: "ana.clara@email.com", turmaId: 1, createdAt: '2025-01-01T00:00:00Z', updatedAt: '2025-01-01T00:00:00Z' },
-      { id: 2, nome: "Bruno Silva Oliveira", matricula: "2025002", contato: "(11) 99999-2222", email: "bruno.silva@email.com", turmaId: 1, createdAt: '2025-01-01T00:00:00Z', updatedAt: '2025-01-01T00:00:00Z' },
-      { id: 3, nome: "Carla Mendes Costa", matricula: "2025003", contato: "(11) 99999-3333", email: "carla.mendes@email.com", turmaId: 1, createdAt: '2025-01-01T00:00:00Z', updatedAt: '2025-01-01T00:00:00Z' },
-      { id: 4, nome: "Diego Ferreira Lima", matricula: "2025004", contato: "(11) 99999-4444", email: "diego.ferreira@email.com", turmaId: 1, createdAt: '2025-01-01T00:00:00Z', updatedAt: '2025-01-01T00:00:00Z' },
-      { id: 5, nome: "Eduarda Rocha Alves", matricula: "2025005", contato: "(11) 99999-5555", email: "eduarda.rocha@email.com", turmaId: 1, createdAt: '2025-01-01T00:00:00Z', updatedAt: '2025-01-01T00:00:00Z' },
-      { id: 6, nome: "Felipe Cardoso Nunes", matricula: "2025006", contato: "(11) 99999-6666", email: "felipe.cardoso@email.com", turmaId: 1, createdAt: '2025-01-01T00:00:00Z', updatedAt: '2025-01-01T00:00:00Z' },
-      { id: 7, nome: "Gabriela Torres Souza", matricula: "2025007", contato: "(11) 99999-7777", email: "gabriela.torres@email.com", turmaId: 1, createdAt: '2025-01-01T00:00:00Z', updatedAt: '2025-01-01T00:00:00Z' },
-      { id: 8, nome: "Henrique Barbosa Cruz", matricula: "2025008", contato: "(11) 99999-8888", email: "henrique.barbosa@email.com", turmaId: 1, createdAt: '2025-01-01T00:00:00Z', updatedAt: '2025-01-01T00:00:00Z' },
-      { id: 9, nome: "Isabela Martins Dias", matricula: "2025009", contato: "(11) 99999-9999", email: "isabela.martins@email.com", turmaId: 1, createdAt: '2025-01-01T00:00:00Z', updatedAt: '2025-01-01T00:00:00Z' },
-      { id: 10, nome: "João Pedro Araújo", matricula: "2025010", contato: "(11) 99999-0000", email: "joao.pedro@email.com", turmaId: 1, createdAt: '2025-01-01T00:00:00Z', updatedAt: '2025-01-01T00:00:00Z' },
-      { id: 11, nome: "Larissa Gomes Pereira", matricula: "2025011", contato: "(11) 98888-1111", email: "larissa.gomes@email.com", turmaId: 1, createdAt: '2025-01-01T00:00:00Z', updatedAt: '2025-01-01T00:00:00Z' },
-      { id: 12, nome: "Mateus Ribeiro Santos", matricula: "2025012", contato: "(11) 98888-2222", email: "mateus.ribeiro@email.com", turmaId: 1, createdAt: '2025-01-01T00:00:00Z', updatedAt: '2025-01-01T00:00:00Z' }
-    ] as Aluno[],
-    diarioAlunos: [
-      { id: 1, diarioId: 1, alunoId: 1 },
-      { id: 2, diarioId: 1, alunoId: 2 },
-      { id: 3, diarioId: 1, alunoId: 3 },
-      { id: 4, diarioId: 1, alunoId: 4 },
-      { id: 5, diarioId: 1, alunoId: 5 },
-      { id: 6, diarioId: 1, alunoId: 6 },
-      { id: 7, diarioId: 1, alunoId: 7 },
-      { id: 8, diarioId: 1, alunoId: 8 },
-      { id: 9, diarioId: 1, alunoId: 9 },
-      { id: 10, diarioId: 1, alunoId: 10 },
-      { id: 11, diarioId: 1, alunoId: 11 },
-      { id: 12, diarioId: 1, alunoId: 12 }
-    ] as DiarioAluno[],
-    aulas: [
-      {
-        id: 1,
-        diarioId: 1,
-        data: "2025-01-15",
-        conteudo: "Introdução à História Antiga",
-        materiais: "Livro didático cap. 1, slides",
-        observacoes: "Primeira aula do ano, apresentação da disciplina",
-        createdAt: '2025-01-15T00:00:00Z',
-        updatedAt: '2025-01-15T00:00:00Z'
-      },
-      {
-        id: 2,
-        diarioId: 1,
-        data: "2025-01-22",
-        conteudo: "Civilizações Mesopotâmicas",
-        materiais: "Livro didático cap. 2, documentário",
-        observacoes: "Alunos demonstraram interesse no tema",
-        createdAt: '2025-01-22T00:00:00Z',
-        updatedAt: '2025-01-22T00:00:00Z'
-      }
-    ] as Aula[],
-    presencas: [
-      { id: 1, aulaId: 1, alunoId: 1, status: 'PRESENTE' as const },
-      { id: 2, aulaId: 1, alunoId: 2, status: 'PRESENTE' as const },
-      { id: 3, aulaId: 1, alunoId: 3, status: 'FALTA' as const },
-      { id: 4, aulaId: 2, alunoId: 1, status: 'PRESENTE' as const },
-      { id: 5, aulaId: 2, alunoId: 2, status: 'PRESENTE' as const },
-      { id: 6, aulaId: 2, alunoId: 3, status: 'PRESENTE' as const }
-    ] as Presenca[],
-    avaliacoes: [
-      {
-        id: 1,
-        diarioId: 1,
-        titulo: "Prova Bimestral - História Antiga",
-        data: "2025-02-15",
-        tipo: "prova",
-        peso: 2.0,
-        createdAt: '2025-02-01T00:00:00Z',
-        updatedAt: '2025-02-01T00:00:00Z'
-      },
-      {
-        id: 2,
-        diarioId: 1,
-        titulo: "Trabalho sobre Civilizações",
-        data: "2025-02-08",
-        tipo: "trabalho",
-        peso: 1.0,
-        createdAt: '2025-02-01T00:00:00Z',
-        updatedAt: '2025-02-01T00:00:00Z'
-      }
-    ] as Avaliacao[],
-    notas: [
-      { id: 1, avaliacaoId: 1, alunoId: 1, valor: 8.5 },
-      { id: 2, avaliacaoId: 1, alunoId: 2, valor: 7.0 },
-      { id: 3, avaliacaoId: 1, alunoId: 3, valor: 9.0 },
-      { id: 4, avaliacaoId: 2, alunoId: 1, valor: 9.0 },
-      { id: 5, avaliacaoId: 2, alunoId: 2, valor: 8.0 },
-      { id: 6, avaliacaoId: 2, alunoId: 3, valor: 8.5 }
-    ] as Nota[],
-    ocorrencias: [
-      {
-        id: 1,
-        diarioId: 1,
-        alumnoId: 6,
-        data: "2025-01-20",
-        tipo: "disciplinar",
-        descricao: "Conversou durante a explicação e atrapalhou outros colegas",
-        acaoTomada: "Conversa individual com o aluno e orientação sobre comportamento em sala",
-        createdAt: '2025-01-20T00:00:00Z',
-        updatedAt: '2025-01-20T00:00:00Z'
-      },
-      {
-        id: 2,
-        diarioId: 1,
-        alumnoId: 4,
-        data: "2025-01-25",
-        tipo: "pedagogica",
-        descricao: "Dificuldade para acompanhar o conteúdo sobre civilizações antigas",
-        acaoTomada: "Indicação de material complementar e agendamento de aula de reforço",
-        createdAt: '2025-01-25T00:00:00Z',
-        updatedAt: '2025-01-25T00:00:00Z'
-      }
-    ] as Ocorrencia[],
-    comunicados: [
-      {
-        id: 1,
-        titulo: "Início do Ano Letivo 2025",
-        mensagem: "Informamos que as aulas do ano letivo 2025 iniciarão no dia 03 de fevereiro. Solicitamos que todos os alunos compareçam pontualmente às 7h30 para a cerimônia de abertura no pátio principal. Os professores devem estar presentes às 7h para organização das turmas.",
-        autor: "Coordenação Pedagógica",
-        autorId: 1,
-        dataPublicacao: "2025-01-20",
-        createdAt: '2025-01-20T00:00:00Z',
-        updatedAt: '2025-01-20T00:00:00Z'
-      },
-      {
-        id: 2,
-        titulo: "Reunião de Pais e Mestres",
-        mensagem: "A primeira reunião de pais e mestres do ano será realizada no dia 15 de março, das 19h às 21h. Será apresentado o planejamento pedagógico do 1º bimestre e o cronograma de avaliações. A presença dos responsáveis é fundamental para o acompanhamento do desenvolvimento dos alunos.",
-        autor: "Direção Escolar",
-        autorId: 1,
-        dataPublicacao: "2025-01-25",
-        createdAt: '2025-01-25T00:00:00Z',
-        updatedAt: '2025-01-25T00:00:00Z'
-      },
-      {
-        id: 3,
-        titulo: "Projeto Feira de Ciências 2025",
-        mensagem: "Está aberto o período de inscrições para a Feira de Ciências 2025. Os alunos podem formar grupos de até 4 integrantes para desenvolver projetos nas áreas de Ciências Naturais, Matemática ou Tecnologia. As inscrições vão até 28 de fevereiro. Mais informações com os professores de cada disciplina.",
-        autor: "Coordenação de Ciências",
-        autorId: 1,
-        dataPublicacao: "2025-01-28",
-        createdAt: '2025-01-28T00:00:00Z',
-        updatedAt: '2025-01-28T00:00:00Z'
-      }
-    ] as Comunicado[],
-    recados: [] as Recado[] // SEMPRE VAZIO - sem recados antigos
-  };
+  usuarios: [
+    {
+      id: 1,
+      nome: 'Coordenador Sistema',
+      email: 'coordenador@demo.com',
+      papel: 'COORDENADOR' as const,
+      createdAt: '2025-01-01T00:00:00Z',
+      updatedAt: '2025-01-01T00:00:00Z'
+    },
+    {
+      id: 2,
+      nome: 'Professor História',
+      email: 'prof@demo.com',
+      papel: 'PROFESSOR' as const,
+      professorId: 1,
+      createdAt: '2025-01-01T00:00:00Z',
+      updatedAt: '2025-01-01T00:00:00Z'
+    },
+    {
+      id: 3,
+      nome: 'Ana Clara Santos',
+      email: 'aluno@demo.com',
+      papel: 'ALUNO' as const,
+      alunoId: 1,
+      createdAt: '2025-01-01T00:00:00Z',
+      updatedAt: '2025-01-01T00:00:00Z'
+    }
+  ] as Usuario[],
+  turmas: [] as Turma[],
+  disciplinas: [] as Disciplina[],
+  professores: [] as Professor[],
+  diarios: [] as Diario[],
+  alunos: [] as Aluno[],
+  diarioAlunos: [] as DiarioAluno[],
+  aulas: [] as Aula[],
+  presencas: [] as Presenca[],
+  avaliacoes: [] as Avaliacao[],
+  notas: [] as Nota[],
+  ocorrencias: [] as Ocorrencia[],
+  comunicados: [] as Comunicado[],
+  recados: [] as Recado[]
+};
+
 
   constructor() {
     // Limpar dados antigos na inicialização
