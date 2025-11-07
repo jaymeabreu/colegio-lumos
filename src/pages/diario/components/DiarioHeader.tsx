@@ -1,95 +1,65 @@
+// Exemplo: DiarioProfessorPage.tsx
 
-import { ArrowLeft } from 'lucide-react';
-import { Button } from '../../../components/ui/button';
-import { DiarioStatusControls } from '../../../components/shared/DiarioStatusControls';
-import { Diario, Disciplina, Turma, Usuario } from '../../../services/mockData';
+import { useState, useEffect } from 'react';
+import { DiarioHeader } from './DiarioHeader';
+import { mockDataService, Diario, Disciplina, Turma, Usuario } from '../../../services/mockData';
+import { AulasTab } from './AulasTab';
+import { RecadosTab } from './RecadosTab';
+// ... Tabs / TabsList / TabsTrigger / TabsContent conforme seu UI
 
-interface DiarioHeaderProps {
-  currentDiario: Diario | null;
-  disciplinas: Disciplina[];
-  turmas: Turma[];
-  currentUser: Usuario | null;
+interface DiarioProfessorPageProps {
+  diarioId: number;
   onBackToDiarios: () => void;
-  onStatusChange: () => void;
 }
 
-export function DiarioHeader({ 
-  currentDiario, 
-  disciplinas, 
-  turmas, 
-  currentUser,
-  onBackToDiarios,
-  onStatusChange 
-}: DiarioHeaderProps) {
-  if (!currentDiario) {
-    return (
-      <header className="bg-white border-b border-gray-200 px-6 py-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={onBackToDiarios}
-              className="h-9 w-9"
-              title="Voltar aos Diários"
-            >
-              <ArrowLeft className="h-4 w-4" />
-            </Button>
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">Carregando...</h1>
-            </div>
-          </div>
-        </div>
-      </header>
-    );
-  }
+export function DiarioProfessorPage({ diarioId, onBackToDiarios }: DiarioProfessorPageProps) {
+  const [currentDiario, setCurrentDiario] = useState<Diario | null>(null);
+  const [disciplinas, setDisciplinas] = useState<Disciplina[]>([]);
+  const [turmas, setTurmas] = useState<Turma[]>([]);
+  const [currentUser, setCurrentUser] = useState<Usuario | null>(null);
 
-  const disciplina = disciplinas.find(d => d.id === currentDiario.disciplinaId);
-  const turma = turmas.find(t => t.id === currentDiario.turmaId);
+  useEffect(() => {
+    const dataDiarios = mockDataService.getDiarios();
+    const diario = dataDiarios.find(d => d.id === diarioId) || null;
+    setCurrentDiario(diario);
+
+    setDisciplinas(mockDataService.getDisciplinas());
+    setTurmas(mockDataService.getTurmas());
+
+    // User vindo do mockData, não do auth minimalista
+    const usuarios = mockDataService.getUsuarios();
+    const usuario = usuarios.find(u => u.id === 2) || null; // ou baseado no auth
+    setCurrentUser(usuario);
+  }, [diarioId]);
+
+  const handleStatusChange = () => {
+    // recarregar diário ou só atualizar state
+    const diarioAtualizado = mockDataService.getDiarios().find(d => d.id === diarioId) || null;
+    setCurrentDiario(diarioAtualizado);
+  };
 
   return (
-    <header className="bg-white border-b border-gray-200 px-6 py-4">
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-4">
-          <Button
-            variant="outline"
-            size="icon"
-            onClick={onBackToDiarios}
-            className="h-9 w-9"
-            title="Voltar aos Diários"
-          >
-            <ArrowLeft className="h-4 w-4" />
-          </Button>
-          <div>
-            <h1 className="text-2xl font-bold text-gray-900">{currentDiario.nome}</h1>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="text-sm font-medium text-primary">
-                {disciplina?.nome || 'Disciplina'}
-              </span>
-              <span className="text-sm text-muted-foreground">•</span>
-              <span className="text-sm text-muted-foreground">
-                {turma?.nome || 'Turma'}
-              </span>
-              <span className="text-sm text-muted-foreground">•</span>
-              <span className="text-sm text-muted-foreground">
-                {currentDiario.bimestre}º Bimestre
-              </span>
-            </div>
-          </div>
-        </div>
+    <div className="flex flex-col min-h-full">
+      <DiarioHeader
+        currentDiario={currentDiario}
+        disciplinas={disciplinas}
+        turmas={turmas}
+        currentUser={currentUser}
+        onBackToDiarios={onBackToDiarios}
+        onStatusChange={handleStatusChange}
+      />
 
-        {/* Controles de Status do Diário */}
-        {currentUser && (
-          <div className="flex items-center gap-3">
-            <DiarioStatusControls 
-              diario={currentDiario}
-              currentUser={currentUser}
-              onStatusChange={onStatusChange}
-              compact={true}
-            />
-          </div>
-        )}
-      </div>
-    </header>
+      {/* Tabs do conteúdo (Aulas, Recados, etc.) */}
+      {/* Exemplo usando algum componente de Tabs que você já tem */}
+      {/* <Tabs defaultValue="aulas"> */}
+      {/*   <TabsList>...</TabsList> */}
+      {/*   <TabsContent value="aulas"> */}
+            <AulasTab diarioId={diarioId} />
+      {/*   </TabsContent> */}
+      {/*   <TabsContent value="recados"> */}
+            <RecadosTab />
+      {/*   </TabsContent> */}
+      {/* </Tabs> */}
+    </div>
   );
 }
