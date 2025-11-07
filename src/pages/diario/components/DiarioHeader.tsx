@@ -44,6 +44,17 @@ export function DiarioHeader({
     );
   }
 
+  console.log('HEADER - currentDiario', currentDiario);
+console.log('HEADER - disciplinas', disciplinas);
+console.log('HEADER - turmas', turmas);
+
+const disciplina = disciplinas.find(d => String(d.id) === String(currentDiario.disciplinaId));
+const turma = turmas.find(t => String(t.id) === String(currentDiario.turmaId));
+
+console.log('HEADER - disciplina encontrada', disciplina);
+console.log('HEADER - turma encontrada', turma);
+
+
   const disciplina = disciplinas.find(d => d.id === currentDiario.disciplinaId);
   const turma = turmas.find(t => t.id === currentDiario.turmaId);
 
