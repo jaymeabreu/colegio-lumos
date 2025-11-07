@@ -286,8 +286,8 @@ export function AlunosList() {
       emailResponsavel: '',
       parentesco: '',
       turmaId: '',
-      anoLetivo: '2025',
-      situacao: 'Ativo',
+      anoLetivo: '',
+      situacao: '',
       observacoes: '',
       criarUsuario: true,
       senhaUsuario: '',
@@ -646,7 +646,6 @@ export function AlunosList() {
                             <SelectValue placeholder="Turma" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="all">Todas as turmas</SelectItem>
                             {turmas.map((turma) => (
                               <SelectItem key={turma.id} value={turma.id.toString()}>
                                 {turma.nome} - {turma.turno}
