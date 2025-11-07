@@ -110,7 +110,7 @@
   --background: #0f172a;
   --foreground: #f8fafc;
   --muted: #1e293b;
-  --muted-foreground: #94a3b8;
+  --muted-foreground: #A2A2A2;
   --border: #334155;
   --input: #1e293b;
   --card: #1e293b;
@@ -698,7 +698,7 @@
 @media (prefers-contrast: high) {
   :root {
     --border: #000000;
-    --muted-foreground: #000000;
+    --muted-foreground: #A2A2A2;
   }
   
   [data-theme="dark"] {
