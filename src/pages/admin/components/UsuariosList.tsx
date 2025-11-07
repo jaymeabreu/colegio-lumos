@@ -154,18 +154,18 @@ export function UsuariosList() {
   }, [loadData]);
 
   const resetForm = useCallback(() => {
-    setFormData({
-      nome: '',
-      email: '',
-      papel: '',
-      alunoId: '',
-      senha: '',
-      confirmarSenha: ''
-    });
-    setEditingUsuario(null);
-    setIsDialogOpen(false);
-    setShowPassword(false);
-  }, []);
+  setFormData({
+    nome: '',
+    email: '',
+    papel: '',
+    alunoId: '',
+    senha: '',
+    confirmarSenha: ''
+  });
+  setEditingUsuario(null);
+  setShowPassword(false);
+}, []);
+
 
   // Funções otimizadas com cache
   const getRoleBadgeColor = useCallback((role: string) => {
@@ -196,43 +196,133 @@ export function UsuariosList() {
               Gerencie os usuários do sistema
             </CardDescription>
           </div>
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger asChild>
-              <Button onClick={resetForm}>
-                <Plus className="h-4 w-4 mr-2" />
-                Novo Usuário
-              </Button>
-            </DialogTrigger>
-            {/* ... dialog content stays the same ... */}
-          </Dialog>
+          <Dialog
+  open={isDialogOpen}
+  onOpenChange={(open) => {
+    setIsDialogOpen(open);
+    if (!open) {
+      resetForm(); // limpa quando fechar
+    }
+  }}
+>
+  <DialogTrigger asChild>
+    <Button
+      type="button"
+      onClick={() => {
+        resetForm();        // novo usuário = form limpinho
+        setIsDialogOpen(true);
+      }}
+    >
+      <Plus className="h-4 w-4 mr-2" />
+      Novo Usuário
+    </Button>
+  </DialogTrigger>
+
+  <DialogContent>
+    <DialogHeader>
+      <DialogTitle>
+        {editingUsuario ? 'Editar Usuário' : 'Novo Usuário'}
+      </DialogTitle>
+      <DialogDescription>
+        {editingUsuario
+          ? 'Atualize os dados deste usuário.'
+          : 'Preencha os dados para criar um novo usuário.'}
+      </DialogDescription>
+    </DialogHeader>
+
+    <form onSubmit={handleSubmit} className="space-y-4">
+      {/* nome */}
+      <div>
+        <Label htmlFor="nome">Nome</Label>
+        <Input
+          id="nome"
+          value={formData.nome}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, nome: e.target.value }))
+          }
+        />
+      </div>
+
+      {/* email */}
+      <div>
+        <Label htmlFor="email">Email</Label>
+        <Input
+          id="email"
+          type="email"
+          value={formData.email}
+          onChange={(e) =>
+            setFormData((prev) => ({ ...prev, email: e.target.value }))
+          }
+        />
+      </div>
+
+      {/* papel */}
+      <div>
+        <Label>Papel</Label>
+        <Select
+          value={formData.papel}
+          onValueChange={(value) =>
+            setFormData((prev) => ({ ...prev, papel: value }))
+          }
+        >
+          <SelectTrigger>
+            <SelectValue placeholder="Selecione o papel" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="COORDENADOR">Coordenador</SelectItem>
+            <SelectItem value="PROFESSOR">Professor</SelectItem>
+            <SelectItem value="ALUNO">Aluno</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      {/* senha / confirmarSenha – no editar é opcional */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+        <div>
+          <Label htmlFor="senha">
+            {editingUsuario ? 'Nova senha (opcional)' : 'Senha'}
+          </Label>
+          <Input
+            id="senha"
+            type={showPassword ? 'text' : 'password'}
+            value={formData.senha}
+            onChange={(e) =>
+              setFormData((prev) => ({ ...prev, senha: e.target.value }))
+            }
+          />
         </div>
-      </CardHeader>
-      <CardContent>
-        <div className="mb-4 flex gap-2">
-          <div className="flex-1">
-            <Input
-              placeholder="Buscar usuários..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <Dialog open={isFilterOpen} onOpenChange={setIsFilterOpen}>
-            <DialogTrigger asChild>
-              <Button 
-                variant="outline" 
-                className={`flex items-center gap-2 whitespace-nowrap ${hasActiveFilters ? 'bg-blue-50 border-blue-200 text-blue-700' : ''}`}
-              >
-                <Filter className="h-4 w-4" />
-                Filtros
-                {hasActiveFilters && (
-                  <span className="bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {Object.values(filters).filter(v => v !== '' && v !== 'all').length}
-                  </span>
-                )}
-              </Button>
-            </DialogTrigger>
-            {/* ... filter dialog content stays the same ... */}
-          </Dialog>
+        <div>
+          <Label htmlFor="confirmarSenha">Confirmar senha</Label>
+          <Input
+            id="confirmarSenha"
+            type={showPassword ? 'text' : 'password'}
+            value={formData.confirmarSenha}
+            onChange={(e) =>
+              setFormData((prev) => ({
+                ...prev,
+                confirmarSenha: e.target.value
+              }))
+            }
+          />
+        </div>
+      </div>
+
+      <DialogFooter>
+        <Button
+          type="button"
+          variant="outline"
+          onClick={() => setIsDialogOpen(false)}
+        >
+          Cancelar
+        </Button>
+        <Button type="submit">
+          {editingUsuario ? 'Salvar alterações' : 'Criar usuário'}
+        </Button>
+      </DialogFooter>
+    </form>
+  </DialogContent>
+</Dialog>
+
         </div>
         
         <div className="space-y-4">
