@@ -72,11 +72,10 @@ export function LoginPage() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="seu@email.com"
+                placeholder="E-mail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
@@ -85,12 +84,11 @@ export function LoginPage() {
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="senha">Senha</Label>
               <div className="relative">
                 <Input
                   id="senha"
                   type={showPassword ? 'text' : 'password'}
-                  placeholder="Sua senha"
+                  placeholder="Senha"
                   value={senha}
                   onChange={(e) => setSenha(e.target.value)}
                   required
