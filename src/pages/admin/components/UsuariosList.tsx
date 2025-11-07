@@ -252,7 +252,7 @@ export function UsuariosList() {
               <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
-                  size="sm"
+                  
                   className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 btn btn-outline h-10 w-10 h-8 w-8"
                   onClick={() => handleEdit(usuario)}
                 >
@@ -260,7 +260,7 @@ export function UsuariosList() {
                 </Button>
                 <Button
                   variant="destructive"
-                  size="sm"
+                  
                   className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 btn btn-destructive h-10 w-10 h-8 w-8"
                   onClick={() => handleDelete(usuario.id)}
                 >
