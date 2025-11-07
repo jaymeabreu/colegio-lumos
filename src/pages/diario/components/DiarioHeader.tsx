@@ -21,6 +21,7 @@ export function DiarioHeader({
   onStatusChange 
 }: DiarioHeaderProps) {
   if (!currentDiario) {
+    console.log('HEADER: currentDiario é null');
     return (
       <header className="bg-white border-b border-gray-200 px-6 py-4">
         <div className="flex items-center justify-between">
@@ -43,7 +44,15 @@ export function DiarioHeader({
     );
   }
 
-  // 1) tenta achar pelos arrays recebidos nas props
+  // LOG GERAL
+  console.log('HEADER: currentDiario recebido =>', currentDiario);
+  console.log('HEADER: ids do diário =>', {
+    disciplinaId: currentDiario.disciplinaId,
+    turmaId: currentDiario.turmaId,
+  });
+  console.log('HEADER: disciplinas props =>', disciplinas);
+  console.log('HEADER: turmas props =>', turmas);
+
   const disciplinaFromProps = (disciplinas || []).find(
     d => d.id === currentDiario.disciplinaId
   );
@@ -51,11 +60,17 @@ export function DiarioHeader({
     t => t.id === currentDiario.turmaId
   );
 
-  // 2) se não achar, busca direto no mockDataService (garantido que tem lá)
-  const disciplina = disciplinaFromProps 
-    || mockDataService.getDisciplinaById(currentDiario.disciplinaId);
-  const turma = turmaFromProps 
-    || mockDataService.getTurmaById(currentDiario.turmaId);
+  console.log('HEADER: disciplinaFromProps =>', disciplinaFromProps);
+  console.log('HEADER: turmaFromProps =>', turmaFromProps);
+
+  const disciplinaFromMock = mockDataService.getDisciplinaById(currentDiario.disciplinaId);
+  const turmaFromMock = mockDataService.getTurmaById(currentDiario.turmaId);
+
+  console.log('HEADER: disciplinaFromMock =>', disciplinaFromMock);
+  console.log('HEADER: turmaFromMock =>', turmaFromMock);
+
+  const disciplina = disciplinaFromProps || disciplinaFromMock;
+  const turma = turmaFromProps || turmaFromMock;
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4">
