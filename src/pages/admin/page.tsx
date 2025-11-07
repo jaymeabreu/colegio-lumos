@@ -21,7 +21,7 @@ export function AdminPage() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Header Fixo */}
-      <header className="sticky top-0 z-50 border-b bg-card px-6 py-4 flex-shrink-0 h-16 flex items-center">
+      <header className="sticky top-0 z-50 border-b bg-card px-6 py-4 flex-shrink-0 flex items-center">
         <div className="flex items-center justify-between w-full">
           <div>
             <h1 className="text-2xl font-semibold text-foreground mb-1">
