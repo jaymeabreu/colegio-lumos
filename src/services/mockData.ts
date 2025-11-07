@@ -63,6 +63,9 @@ export interface Diario {
   dataInicio: string;
   dataTermino: string;
   status: 'PENDENTE' | 'ENTREGUE' | 'DEVOLVIDO' | 'FINALIZADO';
+  // 🔹 novos campos: nomes “resolvidos”
+  disciplinaNome?: string;
+  turmaNome?: string;
   solicitacaoDevolucao?: {
     comentario: string;
     dataSolicitacao: string;
@@ -76,6 +79,7 @@ export interface Diario {
   createdAt: string;
   updatedAt: string;
 }
+
 
 export interface Aluno {
   id: number;
@@ -721,42 +725,72 @@ class MockDataService {
     return this.getData().diarios.filter((d: Diario) => d.professorId === professorId);
   }
 
-  createDiario(diario: Omit<Diario, 'id' | 'createdAt' | 'updatedAt'>): Diario {
-    const data = this.getData();
-    const newDiario: Diario = {
-      ...diario,
-      id: this.getNextId(data.diarios),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    };
-    data.diarios.push(newDiario);
-    this.saveData(data);
+  createDiario(diario: Omit<Diario, 'id' | 'createdAt' | 'updatedAt' | 'disciplinaNome' | 'turmaNome'>): Diario {
+  const data = this.getData();
 
-    // Vincular automaticamente todos os alunos da turma ao diário
-    this.vincularAlunosDaTurmaAoDiario(newDiario.turmaId, newDiario.id);
+  // 🔹 pegar nomes da disciplina e da turma com base nos IDs
+  const disciplina = data.disciplinas.find((d: Disciplina) => d.id === diario.disciplinaId);
+  const turma = data.turmas.find((t: Turma) => t.id === diario.turmaId);
 
-    return newDiario;
-  }
+  const newDiario: Diario = {
+    ...diario,
+    id: this.getNextId(data.diarios),
+    disciplinaNome: disciplina?.nome,
+    turmaNome: turma?.nome,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  };
+
+  data.diarios.push(newDiario);
+  this.saveData(data);
+
+  // Vincular automaticamente todos os alunos da turma ao diário
+  this.vincularAlunosDaTurmaAoDiario(newDiario.turmaId, newDiario.id);
+
+  return newDiario;
+}
+
 
   updateDiario(id: number, updates: Partial<Diario>): Diario | null {
-    const data = this.getData();
-    const index = data.diarios.findIndex((d: Diario) => d.id === id);
-    if (index === -1) return null;
-    
-    const oldDiario = data.diarios[index];
-    data.diarios[index] = { ...data.diarios[index], ...updates, updatedAt: new Date().toISOString() };
-    this.saveData(data);
+  const data = this.getData();
+  const index = data.diarios.findIndex((d: Diario) => d.id === id);
+  if (index === -1) return null;
+  
+  const oldDiario = data.diarios[index];
 
-    // Se a turma mudou, atualizar vínculos
-    if (updates.turmaId && updates.turmaId !== oldDiario.turmaId) {
-      // Remover vínculos antigos
-      this.removerTodosVinculosDoDiario(id);
-      // Adicionar novos vínculos
-      this.vincularAlunosDaTurmaAoDiario(updates.turmaId, id);
-    }
+  // 🔹 se mudou disciplina ou turma, recalcular nomes
+  let disciplinaNome = oldDiario.disciplinaNome;
+  let turmaNome = oldDiario.turmaNome;
 
-    return data.diarios[index];
+  if (updates.disciplinaId !== undefined) {
+    const disciplina = data.disciplinas.find((d: Disciplina) => d.id === updates.disciplinaId);
+    disciplinaNome = disciplina?.nome;
   }
+
+  if (updates.turmaId !== undefined) {
+    const turma = data.turmas.find((t: Turma) => t.id === updates.turmaId);
+    turmaNome = turma?.nome;
+  }
+
+  data.diarios[index] = { 
+    ...data.diarios[index], 
+    ...updates,
+    disciplinaNome,
+    turmaNome,
+    updatedAt: new Date().toISOString() 
+  };
+
+  this.saveData(data);
+
+  // Se a turma mudou, atualizar vínculos
+  if (updates.turmaId && updates.turmaId !== oldDiario.turmaId) {
+    this.removerTodosVinculosDoDiario(id);
+    this.vincularAlunosDaTurmaAoDiario(updates.turmaId, id);
+  }
+
+  return data.diarios[index];
+}
+
 
   deleteDiario(id: number): boolean {
     const data = this.getData();
