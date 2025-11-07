@@ -1128,8 +1128,8 @@ export function ProfessoresList() {
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <Button
                     variant="outline"
-                    size="sm"
-                    className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 btn btn-outline h-10 w-10 h-8 w-8"
+                    size="none"
+                  className="h-8 w-8 p-0 inline-flex items-center justify-center"
                     onClick={() => handleEdit(professor)}
                     title="Editar"
                   >
@@ -1137,8 +1137,8 @@ export function ProfessoresList() {
                   </Button>
                   <Button
                     variant="destructive"
-                    size="sm"
-                    className="inline-flex items-center justify-center whitespace-nowrap font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 btn btn-destructive h-10 w-10 h-8 w-8"
+                    size="none"
+                   className="h-8 w-8 p-0 inline-flex items-center justify-center"
                     onClick={() => handleDelete(professor.id)}
                     title="Excluir"
                   >
