@@ -39,19 +39,17 @@ export function DiarioHeader({
     );
   }
 
-  // Garante que estamos usando a versão "oficial" do diário do mockData
-  const diarioCompleto = mockDataService.getDiarioById(currentDiario.id) || currentDiario;
-
-  // Puxa TODAS as disciplinas/turmas direto do mockData
+  // 1) Buscar todos os dados do mock (sempre atualizados do localStorage)
+  const todosDiarios = mockDataService.getDiarios();
   const todasDisciplinas = mockDataService.getDisciplinas();
   const todasTurmas = mockDataService.getTurmas();
 
-  const disciplina = todasDisciplinas.find(
-    d => String(d.id) === String(diarioCompleto.disciplinaId)
-  );
-  const turma = todasTurmas.find(
-    t => String(t.id) === String(diarioCompleto.turmaId)
-  );
+  // 2) Garantir que estamos usando a versão do diário que está salva no storage
+  const diario = todosDiarios.find(d => d.id === currentDiario.id) || currentDiario;
+
+  // 3) Achar disciplina e turma pelo ID do diário
+  const disciplina = todasDisciplinas.find(d => d.id === diario.disciplinaId);
+  const turma = todasTurmas.find(t => t.id === diario.turmaId);
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4">
@@ -68,7 +66,7 @@ export function DiarioHeader({
           </Button>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
-              {diarioCompleto.nome}
+              {diario.nome}
             </h1>
 
             <div className="flex items-center gap-2 mt-1">
@@ -81,7 +79,7 @@ export function DiarioHeader({
               </span>
               <span className="text-sm text-muted-foreground">•</span>
               <span className="text-sm text-muted-foreground">
-                {diarioCompleto.bimestre}º Bimestre
+                {diario.bimestre}º Bimestre
               </span>
             </div>
           </div>
@@ -90,7 +88,7 @@ export function DiarioHeader({
         {currentUser && (
           <div className="flex items-center gap-3">
             <DiarioStatusControls 
-              diario={diarioCompleto}
+              diario={diario}
               currentUser={currentUser}
               onStatusChange={onStatusChange}
               compact={true}
