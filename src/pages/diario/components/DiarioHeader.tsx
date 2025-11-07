@@ -1,22 +1,17 @@
-
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
 import { DiarioStatusControls } from '../../../components/shared/DiarioStatusControls';
-import { Diario, Disciplina, Turma, Usuario } from '../../../services/mockData';
+import { Diario, Usuario } from '../../../services/mockData';
 
 interface DiarioHeaderProps {
   currentDiario: Diario | null;
-  disciplinas: Disciplina[];
-  turmas: Turma[];
   currentUser: Usuario | null;
   onBackToDiarios: () => void;
   onStatusChange: () => void;
 }
 
 export function DiarioHeader({ 
-  currentDiario, 
-  disciplinas, 
-  turmas, 
+  currentDiario,
   currentUser,
   onBackToDiarios,
   onStatusChange 
@@ -44,8 +39,9 @@ export function DiarioHeader({
     );
   }
 
-  const disciplina = disciplinas.find(d => d.id === currentDiario.disciplinaId);
-  const turma = turmas.find(t => t.id === currentDiario.turmaId);
+  // 👉 Aqui eu dependo TOTALMENTE do currentDiario que chega da página
+  // Se ele tiver disciplinaId/turmaId certos, o topo funciona.
+  // Se não tiver, aqui a gente nunca vai conseguir resolver.
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4">
@@ -61,14 +57,17 @@ export function DiarioHeader({
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{currentDiario.nome}</h1>
+            <h1 className="text-2xl font-bold text-gray-900">
+              {currentDiario.nome}
+            </h1>
             <div className="flex items-center gap-2 mt-1">
               <span className="text-sm font-medium text-primary">
-                {disciplina?.nome || 'Disciplina'}
+                {/* se você criou os campos disciplinaNome/turmaNome, pode usar direto aqui */}
+                {(currentDiario as any).disciplinaNome || 'Disciplina'}
               </span>
               <span className="text-sm text-muted-foreground">•</span>
               <span className="text-sm text-muted-foreground">
-                {turma?.nome || 'Turma'}
+                {(currentDiario as any).turmaNome || 'Turma'}
               </span>
               <span className="text-sm text-muted-foreground">•</span>
               <span className="text-sm text-muted-foreground">
@@ -78,7 +77,6 @@ export function DiarioHeader({
           </div>
         </div>
 
-        {/* Controles de Status do Diário */}
         {currentUser && (
           <div className="flex items-center gap-3">
             <DiarioStatusControls 
