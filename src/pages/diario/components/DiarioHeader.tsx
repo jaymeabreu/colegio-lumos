@@ -1,4 +1,3 @@
-
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
 import { DiarioStatusControls } from '../../../components/shared/DiarioStatusControls';
@@ -44,18 +43,12 @@ export function DiarioHeader({
     );
   }
 
-  
-
-  console.log('HEADER - currentDiario', currentDiario);
-console.log('HEADER - disciplinas', disciplinas);
-console.log('HEADER - turmas', turmas);
-
-const disciplina = disciplinas.find(d => String(d.id) === String(currentDiario.disciplinaId));
-const turma = turmas.find(t => String(t.id) === String(currentDiario.turmaId));
-
-console.log('HEADER - disciplina encontrada', disciplina);
-console.log('HEADER - turma encontrada', turma);
-
+  const disciplina = (disciplinas || []).find(
+    d => String(d.id) === String(currentDiario.disciplinaId)
+  );
+  const turma = (turmas || []).find(
+    t => String(t.id) === String(currentDiario.turmaId)
+  );
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4">
@@ -71,7 +64,9 @@ console.log('HEADER - turma encontrada', turma);
             <ArrowLeft className="h-4 w-4" />
           </Button>
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">{currentDiario.nome}</h1>
+            <h1 className="text-2xl font-bold text-gray-900">
+              {currentDiario.nome}
+            </h1>
             <div className="flex items-center gap-2 mt-1">
               <span className="text-sm font-medium text-primary">
                 {disciplina?.nome || 'Disciplina'}
@@ -88,7 +83,6 @@ console.log('HEADER - turma encontrada', turma);
           </div>
         </div>
 
-        {/* Controles de Status do Diário */}
         {currentUser && (
           <div className="flex items-center gap-3">
             <DiarioStatusControls 
