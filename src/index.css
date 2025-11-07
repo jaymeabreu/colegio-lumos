@@ -248,7 +248,7 @@
 .input::placeholder,
 .textarea::placeholder {
   color: #A2A2A2; 
-  opacity: 0.5; 
+  opacity: 1; 
 }
 
 .textarea {

@@ -131,17 +131,20 @@ export function UsuariosList() {
   }, [formData, editingUsuario, loadData]);
 
   const handleEdit = useCallback((usuario: Usuario) => {
-    setEditingUsuario(usuario);
-    setFormData({
-      nome: usuario.nome,
-      email: usuario.email,
-      papel: usuario.papel,
-      alunoId: usuario.alunoId?.toString() || '',
-      senha: '',
-      confirmarSenha: ''
-    });
-    setIsDialogOpen(true);
-  }, []);
+  console.log('Editando usuário:', usuario);
+
+  setEditingUsuario(usuario);
+  setFormData({
+    nome: usuario.nome,
+    email: usuario.email,
+    papel: usuario.papel,
+    alunoId: usuario.alunoId?.toString() || '',
+    senha: '',
+    confirmarSenha: ''
+  });
+  setIsDialogOpen(true);
+}, []);
+
 
   const handleDelete = useCallback((id: number) => {
     if (confirm('Tem certeza que deseja excluir este usuário?')) {
