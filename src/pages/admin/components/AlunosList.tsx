@@ -573,7 +573,6 @@ export function AlunosList() {
 <SelectItem value="SP">SP</SelectItem>
 <SelectItem value="SE">SE</SelectItem>
 <SelectItem value="TO">TO</SelectItem>
-
                           </SelectContent>
                         </Select>
                       </div>
