@@ -4,8 +4,10 @@ export interface User {
   nome: string;
   email: string;
   papel: 'COORDENADOR' | 'PROFESSOR' | 'ALUNO';
-  alunoId?: number; // Para usuários do tipo ALUNO
+  alunoId?: number;     // Para usuários do tipo ALUNO
+  professorId?: number; // Para usuários do tipo PROFESSOR
 }
+
 
 export interface AuthState {
   user: User | null;
@@ -81,62 +83,68 @@ class AuthService {
 
     // Usuários padrão do sistema (para compatibilidade)
     const usuariosPadrao = [
-      {
-        id: 1,
-        nome: 'Coordenador Sistema',
-        email: 'coordenador@demo.com',
-        senha: '123456',
-        papel: 'COORDENADOR' as const
-      },
-      {
-        id: 2,
-        nome: 'Professor História',
-        email: 'prof@demo.com',
-        senha: '123456',
-        papel: 'PROFESSOR' as const
-      },
-      {
-        id: 3,
-        nome: 'Ana Clara Santos',
-        email: 'aluno@demo.com',
-        senha: '123456',
-        papel: 'ALUNO' as const,
-        alunoId: 1
-      }
-    ];
+  {
+    id: 1,
+    nome: 'Coordenador Sistema',
+    email: 'coordenador@demo.com',
+    senha: '123456',
+    papel: 'COORDENADOR' as const
+  },
+  {
+    id: 2,
+    nome: 'Professor História',
+    email: 'prof@demo.com',
+    senha: '123456',
+    papel: 'PROFESSOR' as const,
+    professorId: 1 // <- IMPORTANTE: bate com o professorId do mockData
+  },
+  {
+    id: 3,
+    nome: 'Ana Clara Santos',
+    email: 'aluno@demo.com',
+    senha: '123456',
+    papel: 'ALUNO' as const,
+    alunoId: 1
+  }
+];
+
 
     // Primeiro, verificar usuários padrão
     let usuario = usuariosPadrao.find(u => u.email === email && u.senha === senha);
     
     // Se não encontrou nos padrão, verificar nos usuários criados no sistema
     if (!usuario) {
-      const usuarioSistema = usuarios.find((u: any) => u.email === email);
-      if (usuarioSistema) {
-        const senhaArmazenada = senhas[usuarioSistema.id];
-        if (senhaArmazenada === senha) {
-          usuario = {
-            id: usuarioSistema.id,
-            nome: usuarioSistema.nome,
-            email: usuarioSistema.email,
-            senha: senhaArmazenada,
-            papel: usuarioSistema.papel,
-            alunoId: usuarioSistema.alunoId
-          };
-        }
-      }
+  const usuarioSistema = usuarios.find((u: any) => u.email === email);
+  if (usuarioSistema) {
+    const senhaArmazenada = senhas[usuarioSistema.id];
+    if (senhaArmazenada === senha) {
+      usuario = {
+        id: usuarioSistema.id,
+        nome: usuarioSistema.nome,
+        email: usuarioSistema.email,
+        senha: senhaArmazenada,
+        papel: usuarioSistema.papel,
+        alunoId: usuarioSistema.alunoId,
+        professorId: usuarioSistema.professorId
+      };
     }
+  }
+}
+
     
     if (!usuario) {
       return { success: false, error: 'Email ou senha inválidos' };
     }
 
     const user: User = {
-      id: usuario.id,
-      nome: usuario.nome,
-      email: usuario.email,
-      papel: usuario.papel,
-      alunoId: usuario.alunoId
-    };
+  id: usuario.id,
+  nome: usuario.nome,
+  email: usuario.email,
+  papel: usuario.papel,
+  alunoId: usuario.alunoId,
+  professorId: usuario.professorId
+};
+
 
     try {
       localStorage.setItem(this.storageKey, JSON.stringify(user));

@@ -244,26 +244,27 @@ class MockDataService {
 
   // Método para limpar dados antigos e garantir estado limpo
   private clearOldData() {
-    try {
-      console.log('Limpando dados antigos...');
-      
-      // Forçar limpeza dos recados antigos
-      const data = this.getData();
-      if (data.recados && data.recados.length > 0) {
-        console.log('Removendo recados antigos:', data.recados.length);
-        data.recados = [];
-        this.saveData(data);
-      }
-      
-      // Limpar também qualquer cache relacionado
-      localStorage.removeItem(this.storageKey + '_recados_cache');
-      localStorage.removeItem(this.storageKey + '_timestamp');
-      
-      console.log('Limpeza concluída - sistema iniciado limpo');
-    } catch (error) {
-      console.error('Erro ao limpar dados antigos:', error);
-    }
+  try {
+    console.log('Verificando dados antigos...');
+
+    const data = this.getData();
+    console.log('Quantidade de recados na inicialização:', data.recados?.length || 0);
+
+    // ⚠️ NÃO apagar mais os recados aqui.
+    // Se algum dia precisar de uma migração, pode colocar uma flag em localStorage
+    // e rodar isso apenas uma vez.
+
+    // Se quiser, pode só limpar caches antigos:
+    localStorage.removeItem(this.storageKey + '_recados_cache');
+    // localStorage.removeItem(this.storageKey + '_timestamp'); // opcional
+
+    console.log('Inicialização concluída sem apagar recados');
+  } catch (error) {
+    console.error('Erro ao limpar dados antigos:', error);
   }
+}
+
+
 
   private getData() {
     try {
