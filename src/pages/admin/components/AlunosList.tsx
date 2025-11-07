@@ -498,68 +498,62 @@ export function AlunosList() {
                     <h4 className="text-lg font-medium mb-4">Dados Básicos</h4>
                     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
                       <div>
-                        <Label htmlFor="nome">Nome Completo *</Label>
                         <Input
                           id="nome"
                           value={formData.nome}
                           onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-                          placeholder="João Silva Santos"
+                          placeholder="Nome Completo"
                           required
                         />
                       </div>
                       <div>
-                        <Label htmlFor="matricula">Matrícula *</Label>
                         <Input
                           id="matricula"
                           value={formData.matricula}
                           onChange={(e) => setFormData({ ...formData, matricula: e.target.value })}
-                          placeholder="2025001"
+                          placeholder="Matrícula"
                           required
                         />
                       </div>
                       <div>
-                        <Label htmlFor="email">Email *</Label>
                         <Input
                           id="email"
                           type="email"
                           value={formData.email}
                           onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          placeholder="joao.silva@email.com"
+                          placeholder="E-mail"
                           required
                         />
                       </div>
                       <div>
-                        <Label htmlFor="dataNascimento">Data de Nascimento</Label>
                         <Input
                           id="dataNascimento"
                           type="date"
                           value={formData.dataNascimento}
                           onChange={(e) => setFormData({ ...formData, dataNascimento: e.target.value })}
+                          placeholder="Data de Nascimento"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="cpf">CPF</Label>
                         <Input
                           id="cpf"
                           value={formData.cpf}
                           onChange={(e) => setFormData({ ...formData, cpf: e.target.value })}
-                          placeholder="000.000.000-00"
+                          placeholder="CPF"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="rg">RG</Label>
                         <Input
                           id="rg"
                           value={formData.rg}
                           onChange={(e) => setFormData({ ...formData, rg: e.target.value })}
-                          placeholder="00.000.000-0"
+                          placeholder="RG"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="sexo">Sexo</Label>
                         <Select value={formData.sexo} onValueChange={(value) => setFormData({ ...formData, sexo: value })}>
                           <SelectTrigger>
-                            <SelectValue placeholder="Selecione" />
+                            <SelectValue placeholder="Sexo" />
                           </SelectTrigger>
                           <SelectContent>
                             <SelectItem value="M">Masculino</SelectItem>
@@ -568,12 +562,11 @@ export function AlunosList() {
                         </Select>
                       </div>
                       <div>
-                        <Label htmlFor="contato">Telefone *</Label>
                         <Input
                           id="contato"
                           value={formData.contato}
                           onChange={(e) => setFormData({ ...formData, contato: e.target.value })}
-                          placeholder="(11) 99999-9999"
+                          placeholder="Telefone"
                           required
                         />
                       </div>
@@ -585,55 +578,72 @@ export function AlunosList() {
                     <h4 className="text-lg font-medium mb-4">Endereço</h4>
                     <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
                       <div className="lg:col-span-2">
-                        <Label htmlFor="endereco">Endereço</Label>
                         <Input
                           id="endereco"
                           value={formData.endereco}
                           onChange={(e) => setFormData({ ...formData, endereco: e.target.value })}
-                          placeholder="Rua das Flores, 123"
+                          placeholder="Endereço"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="bairro">Bairro</Label>
                         <Input
                           id="bairro"
                           value={formData.bairro}
                           onChange={(e) => setFormData({ ...formData, bairro: e.target.value })}
-                          placeholder="Centro"
+                          placeholder="Bairro"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="cidade">Cidade</Label>
                         <Input
                           id="cidade"
                           value={formData.cidade}
                           onChange={(e) => setFormData({ ...formData, cidade: e.target.value })}
-                          placeholder="São Paulo"
+                          placeholder="Cidade"
                         />
                       </div>
                       <div>
-                        <Label htmlFor="estado">Estado</Label>
                         <Select value={formData.estado} onValueChange={(value) => setFormData({ ...formData, estado: value })}>
                           <SelectTrigger>
-                            <SelectValue placeholder="Selecione" />
+                            <SelectValue placeholder="Estado" />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="SP">São Paulo</SelectItem>
-                            <SelectItem value="RJ">Rio de Janeiro</SelectItem>
-                            <SelectItem value="MG">Minas Gerais</SelectItem>
-                            <SelectItem value="RS">Rio Grande do Sul</SelectItem>
-                            <SelectItem value="PR">Paraná</SelectItem>
-                            <SelectItem value="SC">Santa Catarina</SelectItem>
+                            <SelectItem value="AC">AC</SelectItem>
+<SelectItem value="AL">AL</SelectItem>
+<SelectItem value="AP">AP</SelectItem>
+<SelectItem value="AM">AM</SelectItem>
+<SelectItem value="BA">BA</SelectItem>
+<SelectItem value="CE">CE</SelectItem>
+<SelectItem value="DF">DF</SelectItem>
+<SelectItem value="ES">ES</SelectItem>
+<SelectItem value="GO">GO</SelectItem>
+<SelectItem value="MA">MA</SelectItem>
+<SelectItem value="MT">MT</SelectItem>
+<SelectItem value="MS">MS</SelectItem>
+<SelectItem value="MG">MG</SelectItem>
+<SelectItem value="PA">PA</SelectItem>
+<SelectItem value="PB">PB</SelectItem>
+<SelectItem value="PR">PR</SelectItem>
+<SelectItem value="PE">PE</SelectItem>
+<SelectItem value="PI">PI</SelectItem>
+<SelectItem value="RJ">RJ</SelectItem>
+<SelectItem value="RN">RN</SelectItem>
+<SelectItem value="RS">RS</SelectItem>
+<SelectItem value="RO">RO</SelectItem>
+<SelectItem value="RR">RR</SelectItem>
+<SelectItem value="SC">SC</SelectItem>
+<SelectItem value="SP">SP</SelectItem>
+<SelectItem value="SE">SE</SelectItem>
+<SelectItem value="TO">TO</SelectItem>
+
                           </SelectContent>
                         </Select>
                       </div>
                       <div>
-                        <Label htmlFor="cep">CEP</Label>
                         <Input
                           id="cep"
                           value={formData.cep}
                           onChange={(e) => setFormData({ ...formData, cep: e.target.value })}
-                          placeholder="00000-000"
+                          placeholder="CEP"
                         />
                       </div>
                     </div>
