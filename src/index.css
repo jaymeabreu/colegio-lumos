@@ -698,7 +698,7 @@
 @media (prefers-contrast: high) {
   :root {
     --border: #000000;
-    --muted-foreground: #000000;
+    --muted-foreground: #00000073;
   }
   
   [data-theme="dark"] {
