@@ -1,124 +1,161 @@
-import { useState, useEffect } from 'react';
-import { Plus, Edit, Trash2, MessageSquare, Calendar, Users, User } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
-import { Button } from '../../../components/ui/button';
-import { Input } from '../../../components/ui/input';
-import { Label } from '../../../components/ui/label';
-import { Textarea } from '../../../components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../../../components/ui/dialog';
-import { mockDataService, Recado, Turma, Aluno } from '../../../services/mockData';
-import { authService } from '../../../services/auth';
+import { useState, useEffect } from 'react'
+import {
+  Plus,
+  Edit,
+  Trash2,
+  MessageSquare,
+  Calendar,
+  Users,
+  User
+} from 'lucide-react'
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle
+} from '../../../components/ui/card'
+import { Button } from '../../../components/ui/button'
+import { Input } from '../../../components/ui/input'
+import { Label } from '../../../components/ui/label'
+import { Textarea } from '../../../components/ui/textarea'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from '../../../components/ui/select'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger
+} from '../../../components/ui/dialog'
+import { mockDataService, Recado, Turma, Aluno } from '../../../services/mockData'
+import { authService } from '../../../services/auth'
 
 export function RecadosTab() {
-  const [recados, setRecados] = useState<Recado[]>([]);
-  const [turmas, setTurmas] = useState<Turma[]>([]);
-  const [alunos, setAlunos] = useState<Aluno[]>([]);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingRecado, setEditingRecado] = useState<Recado | null>(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [recados, setRecados] = useState<Recado[]>([])
+  const [turmas, setTurmas] = useState<Turma[]>([])
+  const [alunos, setAlunos] = useState<Aluno[]>([])
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [editingRecado, setEditingRecado] = useState<Recado | null>(null)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [formData, setFormData] = useState({
     titulo: '',
     mensagem: '',
     turmaId: '',
     alunoId: ''
-  });
+  })
 
-  const { user } = authService.getAuthState();
+  const { user } = authService.getAuthState()
+  // IMPORTANTE: usar sempre o id do usuário logado como "professorId" dos recados
+  const professorId = user?.id ?? 0
 
   useEffect(() => {
-    loadData();
-    
+    loadData()
+
     const handleDataUpdate = () => {
-      console.log('Evento de atualização de dados recebido');
-      loadData();
-    };
+      console.log('Evento de atualização de dados recebido')
+      loadData()
+    }
 
-    const handleRecadoCreated = (event: CustomEvent) => {
-      console.log('Evento de recado criado recebido:', event.detail);
-      if (event.detail.professorId === user?.professorId) {
-        loadData();
+    const handleRecadoCreated = (event: Event) => {
+      const detail = (event as CustomEvent<Recado>).detail
+      console.log('Evento de recado criado recebido:', detail)
+      if (detail.professorId === professorId) {
+        loadData()
       }
-    };
+    }
 
-    const handleRecadoUpdated = (event: CustomEvent) => {
-      console.log('Evento de recado atualizado recebido:', event.detail);
-      if (event.detail.professorId === user?.professorId) {
-        loadData();
+    const handleRecadoUpdated = (event: Event) => {
+      const detail = (event as CustomEvent<Recado>).detail
+      console.log('Evento de recado atualizado recebido:', detail)
+      if (detail.professorId === professorId) {
+        loadData()
       }
-    };
+    }
 
-    const handleRecadoDeleted = (event: CustomEvent) => {
-      console.log('Evento de recado excluído recebido:', event.detail);
-      loadData();
-    };
+    const handleRecadoDeleted = () => {
+      console.log('Evento de recado excluído recebido')
+      loadData()
+    }
 
-    window.addEventListener('dataUpdated', handleDataUpdate);
-    window.addEventListener('recadoCreated', handleRecadoCreated as EventListener);
-    window.addEventListener('recadoUpdated', handleRecadoUpdated as EventListener);
-    window.addEventListener('recadoDeleted', handleRecadoDeleted as EventListener);
+    window.addEventListener('dataUpdated', handleDataUpdate)
+    window.addEventListener('recadoCreated', handleRecadoCreated)
+    window.addEventListener('recadoUpdated', handleRecadoUpdated)
+    window.addEventListener('recadoDeleted', handleRecadoDeleted)
 
     return () => {
-      window.removeEventListener('dataUpdated', handleDataUpdate);
-      window.removeEventListener('recadoCreated', handleRecadoCreated as EventListener);
-      window.removeEventListener('recadoUpdated', handleRecadoUpdated as EventListener);
-      window.removeEventListener('recadoDeleted', handleRecadoDeleted as EventListener);
-    };
-  }, [user?.professorId]);
+      window.removeEventListener('dataUpdated', handleDataUpdate)
+      window.removeEventListener('recadoCreated', handleRecadoCreated)
+      window.removeEventListener('recadoUpdated', handleRecadoUpdated)
+      window.removeEventListener('recadoDeleted', handleRecadoDeleted)
+    }
+  }, [professorId])
 
   const loadData = async () => {
     try {
-      console.log('Carregando dados dos recados...');
-      setLoading(true);
-      
-      if (user?.professorId) {
-        const recadosData = mockDataService.getRecadosByProfessor(user.professorId);
-        console.log('Recados carregados:', recadosData);
+      console.log('Carregando dados dos recados...')
+      setLoading(true)
+
+      if (professorId) {
+        const recadosData = mockDataService.getRecadosByProfessor(professorId)
+        console.log('Recados carregados:', recadosData)
         setRecados(
           recadosData.sort(
             (a, b) =>
-              new Date(b.dataEnvio).getTime() -
-              new Date(a.dataEnvio).getTime()
+              new Date(b.dataEnvio).getTime() - new Date(a.dataEnvio).getTime()
           )
-        );
+        )
+      } else {
+        setRecados([])
       }
-      
-      const turmasData = mockDataService.getTurmas();
-      console.log('Turmas carregadas:', turmasData);
-      setTurmas(turmasData);
+
+      const turmasData = mockDataService.getTurmas()
+      console.log('Turmas carregadas:', turmasData)
+      setTurmas(turmasData)
     } catch (error) {
-      console.error('Erro ao carregar dados:', error);
+      console.error('Erro ao carregar dados:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   const loadAlunosByTurma = (turmaId: string) => {
     if (turmaId) {
-      const alunosData = mockDataService.getAlunosByTurma(parseInt(turmaId));
-      console.log('Alunos da turma carregados:', alunosData);
-      setAlunos(alunosData);
+      const alunosData = mockDataService.getAlunosByTurma(parseInt(turmaId))
+      console.log('Alunos da turma carregados:', alunosData)
+      setAlunos(alunosData)
     } else {
-      setAlunos([]);
+      setAlunos([])
     }
-  };
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
+    e.preventDefault()
+
     if (!formData.titulo.trim() || !formData.mensagem.trim() || !formData.turmaId) {
-      alert('Por favor, preencha todos os campos obrigatórios.');
-      return;
+      alert('Por favor, preencha todos os campos obrigatórios.')
+      return
     }
 
-    setIsSubmitting(true);
+    if (!professorId) {
+      alert('Usuário não encontrado. Faça login novamente.')
+      return
+    }
+
+    setIsSubmitting(true)
 
     try {
-      const turma = turmas.find(t => t.id === parseInt(formData.turmaId));
+      const turma = turmas.find((t) => t.id === parseInt(formData.turmaId))
       const aluno = formData.alunoId
-        ? alunos.find(a => a.id === parseInt(formData.alunoId))
-        : null;
+        ? alunos.find((a) => a.id === parseInt(formData.alunoId))
+        : null
 
       console.log('Dados do formulário:', {
         titulo: formData.titulo,
@@ -127,11 +164,11 @@ export function RecadosTab() {
         alunoId: formData.alunoId,
         turma,
         aluno,
-        professorId: user?.professorId
-      });
+        professorId
+      })
 
       if (editingRecado) {
-        console.log('Editando recado:', editingRecado.id);
+        console.log('Editando recado:', editingRecado.id)
         const updatedRecado = mockDataService.updateRecado(editingRecado.id, {
           titulo: formData.titulo.trim(),
           mensagem: formData.mensagem.trim(),
@@ -139,111 +176,111 @@ export function RecadosTab() {
           turmaNome: turma?.nome || '',
           alunoId: formData.alunoId ? parseInt(formData.alunoId) : undefined,
           alunoNome: aluno?.nome || undefined
-        });
-        console.log('Recado atualizado:', updatedRecado);
-        
+        })
+        console.log('Recado atualizado:', updatedRecado)
+
         if (updatedRecado) {
-          alert('Recado atualizado com sucesso!');
-          setRecados(prev =>
-            prev.map(r => (r.id === updatedRecado.id ? updatedRecado : r))
-          );
+          alert('Recado atualizado com sucesso!')
+          setRecados((prev) =>
+            prev.map((r) => (r.id === updatedRecado.id ? updatedRecado : r))
+          )
         } else {
-          throw new Error('Falha ao atualizar recado');
+          throw new Error('Falha ao atualizar recado')
         }
       } else {
-        console.log('Criando novo recado...');
+        console.log('Criando novo recado...')
         const novoRecado = mockDataService.createRecado({
           titulo: formData.titulo.trim(),
           mensagem: formData.mensagem.trim(),
-          professorId: user?.professorId || 1,
+          professorId,
           professorNome: user?.nome || 'Professor',
           turmaId: parseInt(formData.turmaId),
           turmaNome: turma?.nome || '',
           alunoId: formData.alunoId ? parseInt(formData.alunoId) : undefined,
           alunoNome: aluno?.nome || undefined,
           dataEnvio: new Date().toISOString().split('T')[0]
-        });
-        console.log('Recado criado:', novoRecado);
-        
+        })
+        console.log('Recado criado:', novoRecado)
+
         if (novoRecado) {
-          alert('Recado enviado com sucesso!');
-          setRecados(prev => [novoRecado, ...prev]);
+          alert('Recado enviado com sucesso!')
+          setRecados((prev) => [novoRecado, ...prev])
         } else {
-          throw new Error('Falha ao criar recado');
+          throw new Error('Falha ao criar recado')
         }
       }
-      
-      handleCloseDialog();
+
+      handleCloseDialog()
 
       setTimeout(() => {
-        loadData();
-      }, 100);
+        loadData()
+      }, 100)
     } catch (error) {
-      console.error('Erro ao salvar recado:', error);
-      alert('Erro ao salvar recado. Tente novamente.');
+      console.error('Erro ao salvar recado:', error)
+      alert('Erro ao salvar recado. Tente novamente.')
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
 
   const handleEdit = (recado: Recado) => {
-    console.log('Editando recado:', recado);
-    setEditingRecado(recado);
+    console.log('Editando recado:', recado)
+    setEditingRecado(recado)
     setFormData({
       titulo: recado.titulo,
       mensagem: recado.mensagem,
       turmaId: recado.turmaId.toString(),
       alunoId: recado.alunoId?.toString() || ''
-    });
-    
-    loadAlunosByTurma(recado.turmaId.toString());
-    setIsDialogOpen(true);
-  };
+    })
+
+    loadAlunosByTurma(recado.turmaId.toString())
+    setIsDialogOpen(true)
+  }
 
   const handleDelete = async (id: number) => {
     if (window.confirm('Tem certeza que deseja excluir este recado?')) {
       try {
-        console.log('Excluindo recado:', id);
-        const success = mockDataService.deleteRecado(id);
-        console.log('Resultado da exclusão:', success);
-        
+        console.log('Excluindo recado:', id)
+        const success = mockDataService.deleteRecado(id)
+        console.log('Resultado da exclusão:', success)
+
         if (success) {
-          alert('Recado excluído com sucesso!');
-          setRecados(prev => prev.filter(r => r.id !== id));
+          alert('Recado excluído com sucesso!')
+          setRecados((prev) => prev.filter((r) => r.id !== id))
           setTimeout(() => {
-            loadData();
-          }, 100);
+            loadData()
+          }, 100)
         } else {
-          alert('Erro ao excluir recado.');
+          alert('Erro ao excluir recado.')
         }
       } catch (error) {
-        console.error('Erro ao excluir recado:', error);
-        alert('Erro ao excluir recado. Tente novamente.');
+        console.error('Erro ao excluir recado:', error)
+        alert('Erro ao excluir recado. Tente novamente.')
       }
     }
-  };
+  }
 
   const handleCloseDialog = () => {
-    setIsDialogOpen(false);
-    setEditingRecado(null);
+    setIsDialogOpen(false)
+    setEditingRecado(null)
     setFormData({
       titulo: '',
       mensagem: '',
       turmaId: '',
       alunoId: ''
-    });
-    setAlunos([]);
-  };
+    })
+    setAlunos([])
+  }
 
   const handleTurmaChange = (value: string) => {
-    console.log('Turma selecionada:', value);
-    setFormData(prev => ({ ...prev, turmaId: value, alunoId: '' }));
-    loadAlunosByTurma(value);
-  };
+    console.log('Turma selecionada:', value)
+    setFormData((prev) => ({ ...prev, turmaId: value, alunoId: '' }))
+    loadAlunosByTurma(value)
+  }
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('pt-BR');
-  };
+    return new Date(dateString).toLocaleDateString('pt-BR')
+  }
 
   return (
     <Card>
@@ -282,8 +319,8 @@ export function RecadosTab() {
                   <Input
                     id="titulo"
                     value={formData.titulo}
-                    onChange={e =>
-                      setFormData(prev => ({ ...prev, titulo: e.target.value }))
+                    onChange={(e) =>
+                      setFormData((prev) => ({ ...prev, titulo: e.target.value }))
                     }
                     placeholder="Digite o título do recado"
                     required
@@ -302,7 +339,7 @@ export function RecadosTab() {
                       <SelectValue placeholder="Selecione uma turma" />
                     </SelectTrigger>
                     <SelectContent>
-                      {turmas.map(turma => (
+                      {turmas.map((turma) => (
                         <SelectItem key={turma.id} value={turma.id.toString()}>
                           {turma.nome} - {turma.anoLetivo}
                         </SelectItem>
@@ -316,8 +353,8 @@ export function RecadosTab() {
                     <Label htmlFor="aluno">Aluno (Opcional)</Label>
                     <Select
                       value={formData.alunoId}
-                      onValueChange={value =>
-                        setFormData(prev => ({ ...prev, alunoId: value }))
+                      onValueChange={(value) =>
+                        setFormData((prev) => ({ ...prev, alunoId: value }))
                       }
                       disabled={isSubmitting}
                     >
@@ -327,10 +364,10 @@ export function RecadosTab() {
                       <SelectContent>
                         {alunos
                           .filter(
-                            aluno =>
+                            (aluno) =>
                               aluno.id && aluno.id.toString().trim() !== ''
                           )
-                          .map(aluno => (
+                          .map((aluno) => (
                             <SelectItem
                               key={aluno.id}
                               value={aluno.id.toString()}
@@ -351,8 +388,8 @@ export function RecadosTab() {
                   <Textarea
                     id="mensagem"
                     value={formData.mensagem}
-                    onChange={e =>
-                      setFormData(prev => ({
+                    onChange={(e) =>
+                      setFormData((prev) => ({
                         ...prev,
                         mensagem: e.target.value
                       }))
@@ -396,7 +433,7 @@ export function RecadosTab() {
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <div className="text-center">
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4" />
               <p className="text-muted-foreground">Carregando recados...</p>
             </div>
           </div>
@@ -412,7 +449,7 @@ export function RecadosTab() {
           </div>
         ) : (
           <div className="space-y-4">
-            {recados.map(recado => (
+            {recados.map((recado) => (
               <div
                 key={recado.id}
                 className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 p-4 border rounded-lg"
@@ -474,5 +511,5 @@ export function RecadosTab() {
         )}
       </CardContent>
     </Card>
-  );
+  )
 }
