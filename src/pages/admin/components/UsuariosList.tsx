@@ -1,12 +1,42 @@
 import { useState, useEffect, useMemo, useCallback } from 'react';
-import { Plus, Edit, Trash2, Users, Eye, EyeOff, Copy, Shuffle, Filter } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Users,
+  Eye,
+  EyeOff,
+  Copy,
+  Shuffle,
+  Filter,
+} from 'lucide-react';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../../../components/ui/card';
 import { Button } from '../../../components/ui/button';
 import { Input } from '../../../components/ui/input';
 import { Badge } from '../../../components/ui/badge';
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../../../components/ui/dialog';
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '../../../components/ui/dialog';
 import { Label } from '../../../components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../../../components/ui/select';
 import { mockDataService, Usuario, Aluno } from '../../../services/mockData';
 
 export function UsuariosList() {
@@ -17,12 +47,11 @@ export function UsuariosList() {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [editingUsuario, setEditingUsuario] = useState<Usuario | null>(null);
   const [showPassword, setShowPassword] = useState(false);
-  
-  // Estados dos filtros - simplificados
+
   const [filters, setFilters] = useState({
     papel: '',
     temAluno: '',
-    temProfessor: ''
+    temProfessor: '',
   });
 
   const [formData, setFormData] = useState({
@@ -31,7 +60,7 @@ export function UsuariosList() {
     papel: '',
     alunoId: '',
     senha: '',
-    confirmarSenha: ''
+    confirmarSenha: '',
   });
 
   const loadData = useCallback(() => {
@@ -43,23 +72,24 @@ export function UsuariosList() {
     loadData();
   }, [loadData]);
 
-  // Filtros ultra-otimizados
   const filteredUsuarios = useMemo(() => {
-    if (!searchTerm && !Object.values(filters).some(v => v && v !== 'all')) {
-      return usuarios; // Retorna lista completa sem processamento
+    if (!searchTerm && !Object.values(filters).some((v) => v && v !== 'all')) {
+      return usuarios;
     }
 
-    return usuarios.filter(usuario => {
-      // Filtro de busca simples primeiro
-      if (searchTerm && !usuario.nome.toLowerCase().includes(searchTerm.toLowerCase()) && 
-          !usuario.email.toLowerCase().includes(searchTerm.toLowerCase())) {
+    return usuarios.filter((usuario) => {
+      if (
+        searchTerm &&
+        !usuario.nome.toLowerCase().includes(searchTerm.toLowerCase()) &&
+        !usuario.email.toLowerCase().includes(searchTerm.toLowerCase())
+      ) {
         return false;
       }
 
-      // Filtros básicos
-      if (filters.papel && filters.papel !== 'all' && usuario.papel !== filters.papel) return false;
+      if (filters.papel && filters.papel !== 'all' && usuario.papel !== filters.papel) {
+        return false;
+      }
 
-      // Filtros mais pesados apenas se necessário
       if (filters.temAluno && filters.temAluno !== 'all') {
         if (filters.temAluno === 'sim' && !usuario.alunoId) return false;
         if (filters.temAluno === 'nao' && usuario.alunoId) return false;
@@ -78,12 +108,12 @@ export function UsuariosList() {
     setFilters({
       papel: '',
       temAluno: '',
-      temProfessor: ''
+      temProfessor: '',
     });
   }, []);
 
   const hasActiveFilters = useMemo(() => {
-    return Object.values(filters).some(value => value !== '' && value !== 'all');
+    return Object.values(filters).some((value) => value !== '' && value !== 'all');
   }, [filters]);
 
   const generatePassword = useCallback(() => {
@@ -92,7 +122,11 @@ export function UsuariosList() {
     for (let i = 0; i < 8; i++) {
       password += chars.charAt(Math.floor(Math.random() * chars.length));
     }
-    setFormData(prev => ({ ...prev, senha: password, confirmarSenha: password }));
+    setFormData((prev) => ({
+      ...prev,
+      senha: password,
+      confirmarSenha: password,
+    }));
   }, []);
 
   const copyPassword = useCallback(() => {
@@ -101,73 +135,80 @@ export function UsuariosList() {
     }
   }, [formData.senha]);
 
-  const handleSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (formData.senha !== formData.confirmarSenha) {
-      alert('As senhas não coincidem!');
-      return;
-    }
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
 
-    const data = {
-      nome: formData.nome,
-      email: formData.email,
-      papel: formData.papel as 'COORDENADOR' | 'PROFESSOR' | 'ALUNO',
-      alunoId: formData.alunoId ? Number(formData.alunoId) : undefined
-    };
-
-    if (editingUsuario) {
-      mockDataService.updateUsuario(editingUsuario.id, data, formData.senha || undefined);
-    } else {
-      if (!formData.senha) {
-        alert('Senha é obrigatória para novos usuários!');
+      if (formData.senha !== formData.confirmarSenha) {
+        alert('As senhas não coincidem!');
         return;
       }
-      mockDataService.createUsuario(data, formData.senha);
-    }
 
-    loadData();
-    resetForm();
-  }, [formData, editingUsuario, loadData]);
+      const data = {
+        nome: formData.nome,
+        email: formData.email,
+        papel: formData.papel as 'COORDENADOR' | 'PROFESSOR' | 'ALUNO',
+        alunoId: formData.alunoId ? Number(formData.alunoId) : undefined,
+      };
+
+      if (editingUsuario) {
+        mockDataService.updateUsuario(
+          editingUsuario.id,
+          data,
+          formData.senha || undefined
+        );
+      } else {
+        if (!formData.senha) {
+          alert('Senha é obrigatória para novos usuários!');
+          return;
+        }
+        mockDataService.createUsuario(data, formData.senha);
+      }
+
+      loadData();
+      setIsDialogOpen(false);
+      resetForm();
+    },
+    [formData, editingUsuario, loadData]
+  );
 
   const handleEdit = useCallback((usuario: Usuario) => {
-  console.log('Editando usuário:', usuario);
+    setEditingUsuario(usuario);
+    setFormData({
+      nome: usuario.nome,
+      email: usuario.email,
+      papel: usuario.papel,
+      alunoId: usuario.alunoId?.toString() || '',
+      senha: '',
+      confirmarSenha: '',
+    });
+    setShowPassword(false);
+    setIsDialogOpen(true);
+  }, []);
 
-  setEditingUsuario(usuario);
-  setFormData({
-    nome: usuario.nome,
-    email: usuario.email,
-    papel: usuario.papel,
-    alunoId: usuario.alunoId?.toString() || '',
-    senha: '',
-    confirmarSenha: ''
-  });
-  setIsDialogOpen(true);
-}, []);
-
-
-  const handleDelete = useCallback((id: number) => {
-    if (confirm('Tem certeza que deseja excluir este usuário?')) {
-      mockDataService.deleteUsuario(id);
-      loadData();
-    }
-  }, [loadData]);
+  const handleDelete = useCallback(
+    (id: number) => {
+      if (confirm('Tem certeza que deseja excluir este usuário?')) {
+        mockDataService.deleteUsuario(id);
+        loadData();
+      }
+    },
+    [loadData]
+  );
 
   const resetForm = useCallback(() => {
-  setFormData({
-    nome: '',
-    email: '',
-    papel: '',
-    alunoId: '',
-    senha: '',
-    confirmarSenha: ''
-  });
-  setEditingUsuario(null);
-  setShowPassword(false);
-}, []);
+    setFormData({
+      nome: '',
+      email: '',
+      papel: '',
+      alunoId: '',
+      senha: '',
+      confirmarSenha: '',
+    });
+    setEditingUsuario(null);
+    setShowPassword(false);
+  }, []);
 
-
-  // Funções otimizadas com cache
   const getRoleBadgeColor = useCallback((role: string) => {
     switch (role) {
       case 'COORDENADOR':
@@ -181,10 +222,13 @@ export function UsuariosList() {
     }
   }, []);
 
-  const getAlunoNome = useCallback((alunoId?: number) => {
-    if (!alunoId) return '';
-    return alunos.find(a => a.id === alunoId)?.nome || '';
-  }, [alunos]);
+  const getAlunoNome = useCallback(
+    (alunoId?: number) => {
+      if (!alunoId) return '';
+      return alunos.find((a) => a.id === alunoId)?.nome || '';
+    },
+    [alunos]
+  );
 
   return (
     <Card>
@@ -192,142 +236,239 @@ export function UsuariosList() {
         <div className="flex items-center justify-between">
           <div>
             <CardTitle>Usuários</CardTitle>
-            <CardDescription>
-              Gerencie os usuários do sistema
-            </CardDescription>
+            <CardDescription>Gerencie os usuários do sistema</CardDescription>
           </div>
+
           <Dialog
-  open={isDialogOpen}
-  onOpenChange={(open) => {
-    setIsDialogOpen(open);
-    if (!open) {
-      resetForm(); // limpa quando fechar
-    }
-  }}
->
-  <DialogTrigger asChild>
-    <Button
-      type="button"
-      onClick={() => {
-        resetForm();        // novo usuário = form limpinho
-        setIsDialogOpen(true);
-      }}
-    >
-      <Plus className="h-4 w-4 mr-2" />
-      Novo Usuário
-    </Button>
-  </DialogTrigger>
+            open={isDialogOpen}
+            onOpenChange={(open) => {
+              setIsDialogOpen(open);
+              if (!open) {
+                resetForm();
+              }
+            }}
+          >
+            <DialogTrigger asChild>
+              <Button
+                type="button"
+                onClick={() => {
+                  resetForm();
+                  setIsDialogOpen(true);
+                }}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                Novo Usuário
+              </Button>
+            </DialogTrigger>
 
-  <DialogContent>
-    <DialogHeader>
-      <DialogTitle>
-        {editingUsuario ? 'Editar Usuário' : 'Novo Usuário'}
-      </DialogTitle>
-      <DialogDescription>
-        {editingUsuario
-          ? 'Atualize os dados deste usuário.'
-          : 'Preencha os dados para criar um novo usuário.'}
-      </DialogDescription>
-    </DialogHeader>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>
+                  {editingUsuario ? 'Editar usuário' : 'Novo usuário'}
+                </DialogTitle>
+                <DialogDescription>
+                  {editingUsuario
+                    ? 'Atualize os dados deste usuário.'
+                    : 'Preencha os dados para criar um novo usuário.'}
+                </DialogDescription>
+              </DialogHeader>
 
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {/* nome */}
-      <div>
-        <Label htmlFor="nome">Nome</Label>
-        <Input
-          id="nome"
-          value={formData.nome}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, nome: e.target.value }))
-          }
-        />
-      </div>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <Label htmlFor="nome">Nome</Label>
+                  <Input
+                    id="nome"
+                    value={formData.nome}
+                    onChange={(e) =>
+                      setFormData((prev) => ({ ...prev, nome: e.target.value }))
+                    }
+                  />
+                </div>
 
-      {/* email */}
-      <div>
-        <Label htmlFor="email">Email</Label>
-        <Input
-          id="email"
-          type="email"
-          value={formData.email}
-          onChange={(e) =>
-            setFormData((prev) => ({ ...prev, email: e.target.value }))
-          }
-        />
-      </div>
+                <div>
+                  <Label htmlFor="email">Email</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) =>
+                      setFormData((prev) => ({ ...prev, email: e.target.value }))
+                    }
+                  />
+                </div>
 
-      {/* papel */}
-      <div>
-        <Label>Papel</Label>
-        <Select
-          value={formData.papel}
-          onValueChange={(value) =>
-            setFormData((prev) => ({ ...prev, papel: value }))
-          }
-        >
-          <SelectTrigger>
-            <SelectValue placeholder="Selecione o papel" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="COORDENADOR">Coordenador</SelectItem>
-            <SelectItem value="PROFESSOR">Professor</SelectItem>
-            <SelectItem value="ALUNO">Aluno</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+                <div>
+                  <Label>Papel</Label>
+                  <Select
+                    value={formData.papel}
+                    onValueChange={(value) =>
+                      setFormData((prev) => ({ ...prev, papel: value }))
+                    }
+                  >
+                    <SelectTrigger>
+                      <SelectValue placeholder="Selecione o papel" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="COORDENADOR">Coordenador</SelectItem>
+                      <SelectItem value="PROFESSOR">Professor</SelectItem>
+                      <SelectItem value="ALUNO">Aluno</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-      {/* senha / confirmarSenha – no editar é opcional */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-        <div>
-          <Label htmlFor="senha">
-            {editingUsuario ? 'Nova senha (opcional)' : 'Senha'}
-          </Label>
-          <Input
-            id="senha"
-            type={showPassword ? 'text' : 'password'}
-            value={formData.senha}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, senha: e.target.value }))
-            }
-          />
+                {formData.papel === 'ALUNO' && (
+                  <div>
+                    <Label htmlFor="alunoId">Aluno vinculado (opcional)</Label>
+                    <Select
+                      value={formData.alunoId}
+                      onValueChange={(value) =>
+                        setFormData((prev) => ({ ...prev, alunoId: value }))
+                      }
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Selecione um aluno" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="">Nenhum</SelectItem>
+                        {alunos.map((aluno) => (
+                          <SelectItem key={aluno.id} value={String(aluno.id)}>
+                            {aluno.nome}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </div>
+                )}
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  <div>
+                    <Label htmlFor="senha">
+                      {editingUsuario ? 'Nova senha (opcional)' : 'Senha'}
+                    </Label>
+                    <Input
+                      id="senha"
+                      type={showPassword ? 'text' : 'password'}
+                      value={formData.senha}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          senha: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="confirmarSenha">Confirmar senha</Label>
+                    <Input
+                      id="confirmarSenha"
+                      type={showPassword ? 'text' : 'password'}
+                      value={formData.confirmarSenha}
+                      onChange={(e) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          confirmarSenha: e.target.value,
+                        }))
+                      }
+                    />
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={generatePassword}
+                  >
+                    <Shuffle className="h-4 w-4 mr-1" />
+                    Gerar senha
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={copyPassword}
+                    disabled={!formData.senha}
+                  >
+                    <Copy className="h-4 w-4 mr-1" />
+                    Copiar
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4 mr-1" />
+                    ) : (
+                      <Eye className="h-4 w-4 mr-1" />
+                    )}
+                    {showPassword ? 'Ocultar' : 'Mostrar'}
+                  </Button>
+                </div>
+
+                <DialogFooter>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => setIsDialogOpen(false)}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button type="submit">
+                    {editingUsuario ? 'Salvar alterações' : 'Criar usuário'}
+                  </Button>
+                </DialogFooter>
+              </form>
+            </DialogContent>
+          </Dialog>
         </div>
-        <div>
-          <Label htmlFor="confirmarSenha">Confirmar senha</Label>
-          <Input
-            id="confirmarSenha"
-            type={showPassword ? 'text' : 'password'}
-            value={formData.confirmarSenha}
-            onChange={(e) =>
-              setFormData((prev) => ({
-                ...prev,
-                confirmarSenha: e.target.value
-              }))
-            }
-          />
-        </div>
-      </div>
+      </CardHeader>
 
-      <DialogFooter>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => setIsDialogOpen(false)}
-        >
-          Cancelar
-        </Button>
-        <Button type="submit">
-          {editingUsuario ? 'Salvar alterações' : 'Criar usuário'}
-        </Button>
-      </DialogFooter>
-    </form>
-  </DialogContent>
-</Dialog>
+      <CardContent>
+        <div className="mb-4 flex gap-2">
+          <div className="flex-1">
+            <Input
+              placeholder="Buscar usuários..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
 
+          <Dialog open={isFilterOpen} onOpenChange={setIsFilterOpen}>
+            <DialogTrigger asChild>
+              <Button
+                variant="outline"
+                className={`flex items-center gap-2 whitespace-nowrap ${
+                  hasActiveFilters
+                    ? 'bg-blue-50 border-blue-200 text-blue-700'
+                    : ''
+                }`}
+              >
+                <Filter className="h-4 w-4" />
+                Filtros
+                {hasActiveFilters && (
+                  <span className="bg-blue-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {
+                      Object.values(filters).filter(
+                        (v) => v !== '' && v !== 'all'
+                      ).length
+                    }
+                  </span>
+                )}
+              </Button>
+            </DialogTrigger>
+            {/* conteúdo do modal de filtro aqui */}
+          </Dialog>
         </div>
-        
+
         <div className="space-y-4">
           {filteredUsuarios.map((usuario) => (
-            <div key={usuario.id} className="flex items-center justify-between p-4 border rounded-lg">
+            <div
+              key={usuario.id}
+              className="flex items-center justify-between p-4 border rounded-lg"
+            >
               <div className="flex-1">
                 <div className="flex items-center gap-3">
                   <h3 className="font-medium">{usuario.nome}</h3>
@@ -354,7 +495,7 @@ export function UsuariosList() {
                 <Button
                   variant="destructive"
                   size="none"
-                   className="h-8 w-8 p-0 inline-flex items-center justify-center"
+                  className="h-8 w-8 p-0 inline-flex items-center justify-center"
                   onClick={() => handleDelete(usuario.id)}
                 >
                   <Trash2 className="h-4 w-4" />
@@ -362,7 +503,7 @@ export function UsuariosList() {
               </div>
             </div>
           ))}
-          
+
           {filteredUsuarios.length === 0 && (
             <div className="text-center py-8 text-gray-500">
               <Users className="h-12 w-12 mx-auto mb-4 opacity-50" />
