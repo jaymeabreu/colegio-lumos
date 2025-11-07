@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2, MessageSquare, Calendar, Users, User } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../../../components/ui/card';
@@ -8,7 +7,6 @@ import { Label } from '../../../components/ui/label';
 import { Textarea } from '../../../components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../../../components/ui/select';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '../../../components/ui/dialog';
-import { Badge } from '../../../components/ui/badge';
 import { mockDataService, Recado, Turma, Aluno } from '../../../services/mockData';
 import { authService } from '../../../services/auth';
 
@@ -26,12 +24,12 @@ export function RecadosTab() {
     turmaId: '',
     alunoId: ''
   });
+
   const { user } = authService.getAuthState();
 
   useEffect(() => {
     loadData();
     
-    // Escutar eventos de atualização de dados
     const handleDataUpdate = () => {
       console.log('Evento de atualização de dados recebido');
       loadData();
@@ -40,20 +38,20 @@ export function RecadosTab() {
     const handleRecadoCreated = (event: CustomEvent) => {
       console.log('Evento de recado criado recebido:', event.detail);
       if (event.detail.professorId === user?.professorId) {
-        loadData(); // Recarregar dados completos
+        loadData();
       }
     };
 
     const handleRecadoUpdated = (event: CustomEvent) => {
       console.log('Evento de recado atualizado recebido:', event.detail);
       if (event.detail.professorId === user?.professorId) {
-        loadData(); // Recarregar dados completos
+        loadData();
       }
     };
 
     const handleRecadoDeleted = (event: CustomEvent) => {
       console.log('Evento de recado excluído recebido:', event.detail);
-      loadData(); // Recarregar dados completos
+      loadData();
     };
 
     window.addEventListener('dataUpdated', handleDataUpdate);
@@ -75,10 +73,15 @@ export function RecadosTab() {
       setLoading(true);
       
       if (user?.professorId) {
-        // Força recarregamento dos dados do localStorage
         const recadosData = mockDataService.getRecadosByProfessor(user.professorId);
         console.log('Recados carregados:', recadosData);
-        setRecados(recadosData.sort((a, b) => new Date(b.dataEnvio).getTime() - new Date(a.dataEnvio).getTime()));
+        setRecados(
+          recadosData.sort(
+            (a, b) =>
+              new Date(b.dataEnvio).getTime() -
+              new Date(a.dataEnvio).getTime()
+          )
+        );
       }
       
       const turmasData = mockDataService.getTurmas();
@@ -113,7 +116,9 @@ export function RecadosTab() {
 
     try {
       const turma = turmas.find(t => t.id === parseInt(formData.turmaId));
-      const aluno = formData.alunoId ? alunos.find(a => a.id === parseInt(formData.alunoId)) : null;
+      const aluno = formData.alunoId
+        ? alunos.find(a => a.id === parseInt(formData.alunoId))
+        : null;
 
       console.log('Dados do formulário:', {
         titulo: formData.titulo,
@@ -139,8 +144,9 @@ export function RecadosTab() {
         
         if (updatedRecado) {
           alert('Recado atualizado com sucesso!');
-          // Atualizar estado local imediatamente
-          setRecados(prev => prev.map(r => r.id === updatedRecado.id ? updatedRecado : r));
+          setRecados(prev =>
+            prev.map(r => (r.id === updatedRecado.id ? updatedRecado : r))
+          );
         } else {
           throw new Error('Falha ao atualizar recado');
         }
@@ -161,21 +167,17 @@ export function RecadosTab() {
         
         if (novoRecado) {
           alert('Recado enviado com sucesso!');
-          // Atualizar estado local imediatamente
           setRecados(prev => [novoRecado, ...prev]);
         } else {
           throw new Error('Falha ao criar recado');
         }
       }
       
-      // Fechar modal
       handleCloseDialog();
-      
-      // Recarregar dados para garantir sincronização
+
       setTimeout(() => {
         loadData();
       }, 100);
-      
     } catch (error) {
       console.error('Erro ao salvar recado:', error);
       alert('Erro ao salvar recado. Tente novamente.');
@@ -194,7 +196,6 @@ export function RecadosTab() {
       alunoId: recado.alunoId?.toString() || ''
     });
     
-    // Carregar alunos da turma
     loadAlunosByTurma(recado.turmaId.toString());
     setIsDialogOpen(true);
   };
@@ -208,9 +209,7 @@ export function RecadosTab() {
         
         if (success) {
           alert('Recado excluído com sucesso!');
-          // Atualizar estado local imediatamente
           setRecados(prev => prev.filter(r => r.id !== id));
-          // Recarregar dados para garantir sincronização
           setTimeout(() => {
             loadData();
           }, 100);
@@ -246,212 +245,234 @@ export function RecadosTab() {
     return new Date(dateString).toLocaleDateString('pt-BR');
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center py-12">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Carregando recados...</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-foreground">Recados</h2>
-          <p className="text-muted-foreground">
-            Envie recados para suas turmas e alunos
-          </p>
-        </div>
-        
-        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-          <DialogTrigger asChild>
-            <Button className="whitespace-nowrap">
-              <Plus className="h-4 w-4 mr-2" />
-              Novo Recado
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="max-w-2xl">
-            <DialogHeader>
-              <DialogTitle>
-                {editingRecado ? 'Editar Recado' : 'Novo Recado'}
-              </DialogTitle>
-              <DialogDescription>
-                {editingRecado 
-                  ? 'Edite as informações do recado abaixo.'
-                  : 'Crie um novo recado para uma turma ou aluno específico.'
-                }
-              </DialogDescription>
-            </DialogHeader>
-            
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="titulo">Título *</Label>
-                <Input
-                  id="titulo"
-                  value={formData.titulo}
-                  onChange={(e) => setFormData(prev => ({ ...prev, titulo: e.target.value }))}
-                  placeholder="Digite o título do recado"
-                  required
-                  disabled={isSubmitting}
-                />
-              </div>
+    <Card>
+      <CardHeader>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+          <div>
+            <CardTitle>Recados</CardTitle>
+            <CardDescription>
+              Envie recados individuais ou para toda a turma
+            </CardDescription>
+          </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="turma">Turma *</Label>
-                <Select value={formData.turmaId} onValueChange={handleTurmaChange} disabled={isSubmitting}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Selecione uma turma" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {turmas.map((turma) => (
-                      <SelectItem key={turma.id} value={turma.id.toString()}>
-                        {turma.nome} - {turma.anoLetivo}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+            <DialogTrigger asChild>
+              <Button onClick={handleCloseDialog} className="flex items-center gap-2">
+                <Plus className="h-4 w-4" />
+                <span className="sm:hidden">Novo</span>
+                <span className="hidden sm:inline">Novo Recado</span>
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-[95vw] lg:max-w-[800px] max-h-[95vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>
+                  {editingRecado ? 'Editar Recado' : 'Novo Recado'}
+                </DialogTitle>
+                <DialogDescription>
+                  {editingRecado
+                    ? 'Edite as informações do recado abaixo.'
+                    : 'Crie um novo recado para uma turma ou aluno específico.'}
+                </DialogDescription>
+              </DialogHeader>
 
-              {formData.turmaId && (
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="aluno">Aluno (Opcional)</Label>
-                  <Select 
-                    value={formData.alunoId} 
-                    onValueChange={(value) => setFormData(prev => ({ ...prev, alunoId: value }))}
+                  <Label htmlFor="titulo">Título *</Label>
+                  <Input
+                    id="titulo"
+                    value={formData.titulo}
+                    onChange={e =>
+                      setFormData(prev => ({ ...prev, titulo: e.target.value }))
+                    }
+                    placeholder="Digite o título do recado"
+                    required
+                    disabled={isSubmitting}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="turma">Turma *</Label>
+                  <Select
+                    value={formData.turmaId}
+                    onValueChange={handleTurmaChange}
                     disabled={isSubmitting}
                   >
                     <SelectTrigger>
-                      <SelectValue placeholder="Deixe vazio para toda a turma" />
+                      <SelectValue placeholder="Selecione uma turma" />
                     </SelectTrigger>
                     <SelectContent>
-                      {alunos
-                        .filter(aluno => aluno.id && aluno.id.toString().trim() !== '')
-                        .map((aluno) => (
-                          <SelectItem key={aluno.id} value={aluno.id.toString()}>
-                            {aluno.nome}
-                          </SelectItem>
-                        ))}
+                      {turmas.map(turma => (
+                        <SelectItem key={turma.id} value={turma.id.toString()}>
+                          {turma.nome} - {turma.anoLetivo}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
-                  <p className="text-xs text-muted-foreground">
-                    Deixe vazio para enviar para toda a turma
-                  </p>
                 </div>
-              )}
-              
-              <div className="space-y-2">
-                <Label htmlFor="mensagem">Mensagem *</Label>
-                <Textarea
-                  id="mensagem"
-                  value={formData.mensagem}
-                  onChange={(e) => setFormData(prev => ({ ...prev, mensagem: e.target.value }))}
-                  placeholder="Digite a mensagem do recado"
-                  rows={6}
-                  required
-                  disabled={isSubmitting}
-                />
-              </div>
-              
-              <div className="flex justify-end gap-2 pt-4">
-                <Button type="button" variant="outline" onClick={handleCloseDialog} disabled={isSubmitting}>
-                  Cancelar
-                </Button>
-                <Button type="submit" disabled={isSubmitting}>
-                  {isSubmitting 
-                    ? 'Salvando...' 
-                    : editingRecado 
-                      ? 'Salvar Alterações' 
-                      : 'Enviar Recado'
-                  }
-                </Button>
-              </div>
-            </form>
-          </DialogContent>
-        </Dialog>
-      </div>
 
-      {recados.length === 0 ? (
-        <Card className="border-border shadow-sm">
-          <CardHeader className="text-center py-12">
-            <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
-              <MessageSquare className="h-8 w-8 text-muted-foreground" />
+                {formData.turmaId && (
+                  <div className="space-y-2">
+                    <Label htmlFor="aluno">Aluno (Opcional)</Label>
+                    <Select
+                      value={formData.alunoId}
+                      onValueChange={value =>
+                        setFormData(prev => ({ ...prev, alunoId: value }))
+                      }
+                      disabled={isSubmitting}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Deixe vazio para toda a turma" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {alunos
+                          .filter(
+                            aluno =>
+                              aluno.id && aluno.id.toString().trim() !== ''
+                          )
+                          .map(aluno => (
+                            <SelectItem
+                              key={aluno.id}
+                              value={aluno.id.toString()}
+                            >
+                              {aluno.nome}
+                            </SelectItem>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                    <p className="text-xs text-muted-foreground">
+                      Deixe vazio para enviar para toda a turma
+                    </p>
+                  </div>
+                )}
+
+                <div className="space-y-2">
+                  <Label htmlFor="mensagem">Mensagem *</Label>
+                  <Textarea
+                    id="mensagem"
+                    value={formData.mensagem}
+                    onChange={e =>
+                      setFormData(prev => ({
+                        ...prev,
+                        mensagem: e.target.value
+                      }))
+                    }
+                    placeholder="Digite a mensagem do recado"
+                    rows={6}
+                    required
+                    disabled={isSubmitting}
+                  />
+                </div>
+
+                <div className="flex justify-end gap-2 pt-4 border-t">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleCloseDialog}
+                    className="btn btn-outline btn-md"
+                    disabled={isSubmitting}
+                  >
+                    Cancelar
+                  </Button>
+                  <Button
+                    type="submit"
+                    className="btn btn-primary btn-md"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting
+                      ? 'Salvando...'
+                      : editingRecado
+                      ? 'Salvar Alterações'
+                      : 'Enviar Recado'}
+                  </Button>
+                </div>
+              </form>
+            </DialogContent>
+          </Dialog>
+        </div>
+      </CardHeader>
+
+      <CardContent>
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-muted-foreground">Carregando recados...</p>
             </div>
-            <CardTitle>Nenhum recado encontrado</CardTitle>
-            <CardDescription>
-              Crie o primeiro recado para suas turmas.
-            </CardDescription>
-          </CardHeader>
-        </Card>
-      ) : (
-        <div className="space-y-4">
-          {recados.map((recado) => (
-            <Card key={recado.id} className="border-border shadow-sm">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <CardTitle className="text-lg">{recado.titulo}</CardTitle>
+          </div>
+        ) : recados.length === 0 ? (
+          <div className="text-center py-8 text-muted-foreground">
+            <div className="mx-auto w-16 h-16 bg-muted rounded-full flex items-center justify-center mb-4">
+              <MessageSquare className="h-8 w-8 opacity-60" />
+            </div>
+            <p className="font-medium mb-1">Nenhum recado encontrado</p>
+            <p className="text-sm">
+              Crie o primeiro recado para suas turmas ou alunos.
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {recados.map(recado => (
+              <div
+                key={recado.id}
+                className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 p-4 border rounded-lg"
+              >
+                <div className="flex-1">
+                  <h3 className="font-medium">{recado.titulo}</h3>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-1 text-sm text-muted-foreground">
+                    <span className="flex items-center gap-1">
+                      <Calendar className="h-3 w-3" />
+                      {formatDate(recado.dataEnvio)}
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <Users className="h-3 w-3" />
+                      {recado.turmaNome}
+                    </span>
+                    {recado.alunoNome && (
+                      <span className="flex items-center gap-1">
+                        <User className="h-3 w-3" />
+                        {recado.alunoNome}
+                      </span>
+                    )}
+                    <span className="inline-flex items-center px-2 py-1 text-[11px] rounded-full border border-border text-muted-foreground">
                       {recado.alunoId ? (
-                        <Badge variant="secondary" className="text-xs">
+                        <>
                           <User className="h-3 w-3 mr-1" />
                           Individual
-                        </Badge>
+                        </>
                       ) : (
-                        <Badge variant="outline" className="text-xs">
+                        <>
                           <Users className="h-3 w-3 mr-1" />
                           Turma
-                        </Badge>
+                        </>
                       )}
-                    </div>
-                    <div className="flex items-center gap-4 text-sm text-muted-foreground">
-                      <div className="flex items-center gap-1">
-                        <Calendar className="h-4 w-4" />
-                        <span>{formatDate(recado.dataEnvio)}</span>
-                      </div>
-                      <div className="flex items-center gap-1">
-                        <Users className="h-4 w-4" />
-                        <span>{recado.turmaNome}</span>
-                      </div>
-                      {recado.alunoNome && (
-                        <div className="flex items-center gap-1">
-                          <User className="h-4 w-4" />
-                          <span>{recado.alunoNome}</span>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => handleEdit(recado)}
-                      title="Editar recado"
-                    >
-                      <Edit className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() => handleDelete(recado.id)}
-                      title="Excluir recado"
-                      className="text-destructive hover:text-destructive"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
+                    </span>
                   </div>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-foreground whitespace-pre-wrap">{recado.mensagem}</p>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      )}
-    </div>
+
+                <div className="flex items-center gap-2 flex-shrink-0">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleEdit(recado)}
+                    title="Editar recado"
+                  >
+                    <Edit className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    onClick={() => handleDelete(recado.id)}
+                    title="Excluir recado"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }
