@@ -322,8 +322,8 @@ export function ComunicadosList() {
                   <div className="flex items-center gap-2 flex-shrink-0">
                     <Button
                       variant="outline"
-                      size="sm"
-                      className="inline-flex items-center justify-center h-8 w-8"
+                      size="none"
+                  className="h-8 w-8 p-0 inline-flex items-center justify-center"
                       onClick={() => handleEdit(comunicado)}
                       title="Editar comunicado"
                     >
@@ -331,8 +331,8 @@ export function ComunicadosList() {
                     </Button>
                     <Button
                       variant="destructive"
-                      size="sm"
-                      className="inline-flex items-center justify-center h-8 w-8"
+                      size="none"
+                  className="h-8 w-8 p-0 inline-flex items-center justify-center"
                       onClick={() => handleDelete(comunicado.id)}
                       title="Excluir comunicado"
                     >
