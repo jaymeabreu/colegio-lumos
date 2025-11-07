@@ -554,7 +554,6 @@ export function ProfessoresList() {
                         />
                       </div>
                       <div>
-                        <Label htmlFor="cidade">Cidade</Label>
                         <Input
                           id="cidade"
                           value={formData.cidade}
@@ -606,7 +605,6 @@ export function ProfessoresList() {
                         </Select>
                       </div>
                       <div>
-                        <Label htmlFor="cep">CEP</Label>
                         <Input
                           id="cep"
                           value={formData.cep}
@@ -659,20 +657,7 @@ export function ProfessoresList() {
                           placeholder="Registro Profissional"
                         />
                       </div>
-                      <div>
-                        <Label htmlFor="dataAdmissao">Data de Admissão</Label>
-                        <Input
-                          id="dataAdmissao"
-                          type="date"
-                          value={formData.dataAdmissao}
-                          onChange={(e) =>
-                            setFormData({
-                              ...formData,
-                              dataAdmissao: e.target.value,
-                            })
-                          }
-                        />
-                      </div>
+                      
                       <div>
                         <Select
                           value={formData.situacao}
@@ -690,6 +675,20 @@ export function ProfessoresList() {
                             <SelectItem value="Afastado">Afastado</SelectItem>
                           </SelectContent>
                         </Select>
+                      </div>
+                      <div>
+                        <Label htmlFor="dataAdmissao">Data de Admissão</Label>
+                        <Input
+                          id="dataAdmissao"
+                          type="date"
+                          value={formData.dataAdmissao}
+                          onChange={(e) =>
+                            setFormData({
+                              ...formData,
+                              dataAdmissao: e.target.value,
+                            })
+                          }
+                        />
                       </div>
                     </div>
                   </div>
