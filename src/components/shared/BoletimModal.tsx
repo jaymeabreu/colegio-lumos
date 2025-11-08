@@ -293,7 +293,7 @@ export function BoletimModal({ aluno, onClose, diarioId }: BoletimModalProps) {
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b">
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-semibold">
+            <div className="w-12 h-12 rounded-full bg-muted text-primary-foreground flex items-center justify-center font-semibold">
               {getInitials(aluno.nome)}
             </div>
             <div>
