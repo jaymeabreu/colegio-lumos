@@ -72,7 +72,7 @@ export function DiarioHeader({
               </span>
               <span className="text-sm text-muted-foreground">•</span>
               <span className="text-sm text-muted-foreground">
-                {currentDiario.bimestre}º Bimestre
+                {diario.bimestre}º Bimestre
               </span>
             </div>
           </div>
