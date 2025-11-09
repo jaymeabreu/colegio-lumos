@@ -275,7 +275,7 @@ export function ProfessorPage() {
                               <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-2">
                                   <CardTitle className="text-lg group-hover:text-primary transition-colors">
-                                    {disciplina?.nome || 'Disciplina'} – {turma?.nome || 'Turma'}
+                                    {diario.nome}
                                   </CardTitle>
                                 </div>
                                 <div className="flex items-center gap-2 mb-2">
@@ -283,9 +283,7 @@ export function ProfessorPage() {
                                     {statusInfo.label}
                                   </div>
                                 </div>
-                                <CardDescription>
-                                  {diario.nome}
-                                </CardDescription>
+
                               </div>
                               <ChevronRight className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
                             </div>
