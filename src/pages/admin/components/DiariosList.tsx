@@ -284,10 +284,10 @@ export function DiariosList() {
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div class="space-y-2">
-            <CardTitle>Diários</CardTitle>
-            <CardDescription>
+            <h3 className="card-title">Diários</h3>
+            <p className="card-description">
               Gerencie os diários de classe e controle o status de entrega
-            </CardDescription>
+            </p>
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
