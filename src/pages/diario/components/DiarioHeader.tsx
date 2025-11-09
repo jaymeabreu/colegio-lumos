@@ -1,12 +1,12 @@
 import { ArrowLeft } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
 import { DiarioStatusControls } from '../../../components/shared/DiarioStatusControls';
-import { Diario, Disciplina, Turma, Usuario } from '../../../services/mockData';
+import { mockDataService, Diario, Disciplina, Turma, Usuario } from '../../../services/mockData';
 
 interface DiarioHeaderProps {
   currentDiario: Diario | null;
-  disciplinas: Disciplina[];
-  turmas: Turma[];
+  disciplinas?: Disciplina[]; // opcional
+  turmas?: Turma[];           // opcional
   currentUser: Usuario | null;
   onBackToDiarios: () => void;
   onStatusChange: () => void;
@@ -14,8 +14,8 @@ interface DiarioHeaderProps {
 
 export function DiarioHeader({ 
   currentDiario, 
-  disciplinas, 
-  turmas, 
+  disciplinas,
+  turmas,
   currentUser,
   onBackToDiarios,
   onStatusChange 
@@ -43,11 +43,35 @@ export function DiarioHeader({
     );
   }
 
-  const disciplina = disciplinas.find(d => d.id === currentDiario.disciplinaId);
-  const turma = turmas.find(t => t.id === currentDiario.turmaId);
+  // 1) Disciplina: tenta usar string do próprio diário; se não tiver,
+  //    tenta achar na lista recebida por props; se não, busca no mockDataService.
+  let disciplinaNome = currentDiario.disciplina ?? '';
 
-  // Se no seu modelo o campo for "bimestreAtual", troca aqui:
-  const bimestre = (currentDiario as any).bimestre ?? (currentDiario as any).bimestreAtual;
+  if (!disciplinaNome) {
+    if (disciplinas && disciplinas.length > 0) {
+      const d = disciplinas.find(d => d.id === currentDiario.disciplinaId);
+      disciplinaNome = d?.nome ?? '';
+    } else if (typeof currentDiario.disciplinaId !== 'undefined') {
+      const d = mockDataService.getDisciplinaById(currentDiario.disciplinaId);
+      disciplinaNome = d?.nome ?? '';
+    }
+  }
+
+  // 2) Turma: mesma lógica da disciplina
+  let turmaNome = currentDiario.turma ?? '';
+
+  if (!turmaNome) {
+    if (turmas && turmas.length > 0) {
+      const t = turmas.find(t => t.id === currentDiario.turmaId);
+      turmaNome = t?.nome ?? '';
+    } else if (typeof currentDiario.turmaId !== 'undefined') {
+      const t = mockDataService.getTurmaById(currentDiario.turmaId);
+      turmaNome = t?.nome ?? '';
+    }
+  }
+
+  // 3) Bimestre: aceita tanto "bimestre" quanto "bimestreAtual"
+  const bimestre = (currentDiario as any).bimestre ?? (currentDiario as any).bimestreAtual ?? '';
 
   return (
     <header className="bg-white border-b border-gray-200 px-6 py-4">
@@ -68,15 +92,15 @@ export function DiarioHeader({
             </h1>
             <div className="flex items-center gap-2 mt-1">
               <span className="text-sm font-medium text-primary">
-                {disciplina?.nome || 'Disciplina'}
+                {disciplinaNome || 'Disciplina'}
               </span>
               <span className="text-sm text-muted-foreground">•</span>
               <span className="text-sm text-muted-foreground">
-                {turma?.nome || 'Turma'}
+                {turmaNome || 'Turma'}
               </span>
               <span className="text-sm text-muted-foreground">•</span>
               <span className="text-sm text-muted-foreground">
-                {bimestre}º Bimestre
+                {bimestre ? `${bimestre}º Bimestre` : 'Bimestre não definido'}
               </span>
             </div>
           </div>
