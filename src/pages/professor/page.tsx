@@ -208,9 +208,9 @@ export function ProfessorPage() {
               ) : (
                 <div className="space-y-6">
                   <div className="text-center">
-                    <h2 className="text-xl font-semibold text-foreground mb-2">
+                    <h3 class="card-title">
                       Meus Diários - Ano Letivo 2025
-                    </h2>
+                    </h3>
                     <p className="text-muted-foreground">
                       Você possui {diarios.length} {diarios.length === 1 ? 'diário' : 'diários'} atribuído{diarios.length === 1 ? '' : 's'}
                     </p>
