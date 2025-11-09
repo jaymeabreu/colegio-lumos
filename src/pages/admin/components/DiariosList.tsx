@@ -283,7 +283,7 @@ export function DiariosList() {
     <Card>
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div class="card-header">
+          <div class="space-y-2">
             <CardTitle>Diários</CardTitle>
             <CardDescription>
               Gerencie os diários de classe e controle o status de entrega

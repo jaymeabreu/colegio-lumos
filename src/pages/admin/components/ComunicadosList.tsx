@@ -176,11 +176,11 @@ export function ComunicadosList() {
       {/* HEADER NO MESMO PADRÃO DA TELA DE ALUNOS */}
       <div className="card-header">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
-            <h3 className="card-title">Comunicados</h3>
-            <p className="card-description">
-              Gerencie os comunicados gerais da escola
-            </p>
+          <div class="space-y-2">
+            <CardTitle>Comunicados</CardTitle>
+                        <CardDescription>
+                          Gerencie os comunicados gerais da escola
+                        </CardDescription>
           </div>
 
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
