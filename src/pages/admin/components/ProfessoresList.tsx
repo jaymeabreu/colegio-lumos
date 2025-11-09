@@ -1081,7 +1081,7 @@ export function ProfessoresList() {
                         />
                       </div>
                     ) : (
-                      <div className="w-12 h-12 rounded-full bg-gray-100 border-2 border-gray-200 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-gray-100 border-1 border-gray-200 flex items-center justify-center flex-shrink-0">
                         <Users className="h-6 w-6 text-gray-400" />
                       </div>
                     )}

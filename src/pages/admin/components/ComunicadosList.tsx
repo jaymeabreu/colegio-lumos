@@ -294,7 +294,7 @@ export function ComunicadosList() {
             {comunicados.map(comunicado => (
               <div
                 key={comunicado.id}
-                className="p-4 border rounded-lg shadow-sm bg-background flex flex-col gap-3"
+                className="p-4 border rounded-lg flex flex-col gap-3"
               >
                 <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3">
                   <div className="flex-1">
