@@ -33,7 +33,6 @@ export function ExportacaoTab() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <FileText className="h-5 w-5" />
             Exportação de Diários
           </CardTitle>
           <CardDescription>
@@ -102,7 +101,6 @@ export function ExportacaoTab() {
       <Card>
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
-            <Download className="h-5 w-5" />
             Relatórios Gerais
           </CardTitle>
           <CardDescription>

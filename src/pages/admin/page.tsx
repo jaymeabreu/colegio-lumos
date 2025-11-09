@@ -24,7 +24,7 @@ export function AdminPage() {
       <header className="sticky top-0 z-50 border-b bg-card px-6 py-4 flex-shrink-0 flex items-center">
         <div className="flex items-center justify-between w-full">
           <div>
-            <h1 className="text-2xl font-semibold text-foreground mb-1">
+            <h1 className="text-2xl font-bold">
               Painel Administrativo
             </h1>
             <p className="text-sm text-muted-foreground">
