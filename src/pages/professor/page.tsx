@@ -177,9 +177,8 @@ export function ProfessorPage() {
           <header className="sticky top-0 z-50 border-b bg-card px-6 py-4 flex-shrink-0 h-20 flex items-center">
             <div className="flex items-center justify-between w-full">
               <div className="flex items-center gap-4">
-                <GraduationCap className="h-8 w-8 text-primary" />
                 <div>
-                  <h1 className="text-2xl font-semibold text-foreground">
+                  <h1 className="text-2xl font-bold">
                     Área do Professor
                   </h1>
                   <p className="text-sm text-muted-foreground">
