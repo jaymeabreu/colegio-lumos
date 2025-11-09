@@ -534,26 +534,26 @@ export function BoletimModal({ aluno, onClose, diarioId }: BoletimModalProps) {
                             </CardHeader>
                             <CardContent className="space-y-4">
                               <div className="flex justify-between items-center">
-                                <span className="text-sm text-muted-foreground">Média Final:</span>
+                                <span className="text-base text-muted-foreground">Média Final:</span>
                                 <span className={`font-bold text-lg ${getMediaColor(item.media)}`}>
                                   {item.media > 0 ? item.media.toFixed(1) : '-'}
                                 </span>
                               </div>
 
                               <div className="flex justify-between items-center">
-                                <span className="text-sm text-muted-foreground">Frequência:</span>
+                                <span className="text-base text-muted-foreground">Frequência:</span>
                                 <span className={`font-bold ${getFrequenciaColor(item.frequencia)}`}>
                                   {item.frequencia > 0 ? item.frequencia.toFixed(1) + '%' : '-'}
                                 </span>
                               </div>
 
                               <div className="flex justify-between items-center">
-                                <span className="text-sm text-muted-foreground">Situação:</span>
+                                <span className="text-base text-muted-foreground">Situação:</span>
                                 <Badge variant={getSituacaoVariant(item.situacao)}>{item.situacao}</Badge>
                               </div>
 
                               <div className="space-y-2">
-                                <span className="text-sm text-muted-foreground">Presença:</span>
+                                <span className="text-base text-muted-foreground">Presença:</span>
                                 <div className="grid grid-cols-3 gap-2 text-center">
                                   <div className="p-2 rounded bg-green-50">
                                     <div className="text-xs text-green-600">Presentes</div>
@@ -602,7 +602,7 @@ export function BoletimModal({ aluno, onClose, diarioId }: BoletimModalProps) {
                                 >
                                   <div>
                                     <p className="font-medium text-foreground">{avaliacao.titulo}</p>
-                                    <p className="text-sm text-muted-foreground">
+                                    <p className="text-base text-muted-foreground">
                                       {disciplina} • {new Date(avaliacao.data).toLocaleDateString('pt-BR')} • Peso:{' '}
                                       {avaliacao.peso}
                                     </p>
@@ -665,19 +665,19 @@ export function BoletimModal({ aluno, onClose, diarioId }: BoletimModalProps) {
                                   <Badge variant={getOcorrenciaColor(ocorrencia.tipo)}>
                                     {ocorrencia.tipo === 'disciplinar' ? 'Disciplinar' : 'Pedagógica'}
                                   </Badge>
-                                  <span className="text-sm text-muted-foreground">
+                                  <span className="text-base text-muted-foreground">
                                     {new Date(ocorrencia.data).toLocaleDateString('pt-BR')}
                                   </span>
                                 </div>
 
                                 <div>
                                   <h4 className="font-medium text-foreground mb-1">Descrição:</h4>
-                                  <p className="text-sm text-muted-foreground">{ocorrencia.descricao}</p>
+                                  <p className="text-base text-muted-foreground">{ocorrencia.descricao}</p>
                                 </div>
 
                                 <div>
                                   <h4 className="font-medium text-foreground mb-1">Ação Tomada:</h4>
-                                  <p className="text-sm text-muted-foreground">{ocorrencia.acaoTomada}</p>
+                                  <p className="text-base text-muted-foreground">{ocorrencia.acaoTomada}</p>
                                 </div>
                               </div>
                             ))}

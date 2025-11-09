@@ -51,7 +51,7 @@ export function MiniCalendar() {
               </Button>
             </div>
           </div>
-          <div className="text-sm text-muted-foreground">
+          <div className="text-base text-muted-foreground">
             {calendarData.currentMonth} {calendarData.currentYear}
           </div>
         </CardHeader>

@@ -419,7 +419,7 @@ export function RecadosTab() {
               >
                 <div className="flex-1">
                   <h3 className="font-medium">{recado.titulo}</h3>
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-1 text-sm text-muted-foreground">
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-4 mt-1 text-base text-muted-foreground">
                     <span className="flex items-center gap-1">
                       <Calendar className="h-3 w-3" />
                       {formatDate(recado.dataEnvio)}

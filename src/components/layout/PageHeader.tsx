@@ -28,7 +28,7 @@ export function PageHeader() {
 
       {/* Breadcrumb and title */}
       <div className="space-y-2">
-        <nav className="flex items-center space-x-1 text-sm text-muted-foreground">
+        <nav className="flex items-center space-x-1 text-base text-muted-foreground">
           <span>Painel</span>
           <ChevronRight className="h-4 w-4" />
           <span>Visão geral</span>

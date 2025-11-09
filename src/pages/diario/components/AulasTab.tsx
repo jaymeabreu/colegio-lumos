@@ -566,7 +566,7 @@ export function AulasTab({ diarioId, readOnly = false }: AulasTabProps) {
             <DialogTitle>
               Marcar Presença - {selectedAula?.conteudo}
             </DialogTitle>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-base text-muted-foreground">
               {selectedAula &&
                 `${new Date(selectedAula.data).toLocaleDateString('pt-BR')} - ${selectedAula.horario}`}
             </p>

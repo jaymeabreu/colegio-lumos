@@ -66,12 +66,12 @@ export function DiarioHeader({
     <span className="text-sm font-medium text-primary">
       {currentDiario.disciplina || 'Disciplina'}
     </span>
-    <span className="text-sm text-muted-foreground">•</span>
-    <span className="text-sm text-muted-foreground">
+    <span className="text-base text-muted-foreground">•</span>
+    <span className="text-base text-muted-foreground">
       {currentDiario.turma || 'Turma'}
     </span>
-    <span className="text-sm text-muted-foreground">•</span>
-    <span className="text-sm text-muted-foreground">
+    <span className="text-base text-muted-foreground">•</span>
+    <span className="text-base text-muted-foreground">
       {(currentDiario as any).bimestreAtual
         ? `${(currentDiario as any).bimestreAtual}º Bimestre`
         : (currentDiario as any).bimestre

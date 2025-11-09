@@ -143,7 +143,7 @@ export function ProfessorPage() {
           <div>
             <h1 className="text-2xl font-bold">{currentDiario.nome}</h1>
             <div className="flex items-center gap-2 mt-1">
-    <span className="text-sm text-muted-foreground">
+    <span className="text-base text-muted-foreground">
       {(currentDiario as any).bimestreAtual
         ? `${(currentDiario as any).bimestreAtual}º Bimestre`
         : (currentDiario as any).bimestre
@@ -181,7 +181,7 @@ export function ProfessorPage() {
                   <h1 className="text-2xl font-bold">
                     Área do Professor
                   </h1>
-                  <p className="text-sm text-muted-foreground">
+                  <p className="text-base text-muted-foreground">
                     Selecione um diário para gerenciar
                   </p>
                 </div>
@@ -291,15 +291,15 @@ export function ProfessorPage() {
                           </CardHeader>
                           <CardContent className="pt-0">
                             <div className="space-y-3">
-                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <div className="flex items-center gap-2 text-base text-muted-foreground">
                                 <Calendar className="h-4 w-4" />
                                 <span>Bimestre Atual: {diario.bimestre}º</span>
                               </div>
-                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <div className="flex items-center gap-2 text-base text-muted-foreground">
                                 <Clock className="h-4 w-4" />
                                 <span>Período: {diario.periodo || 'Matutino'}</span>
                               </div>
-                              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                              <div className="flex items-center gap-2 text-base text-muted-foreground">
                                 <Users className="h-4 w-4" />
                                 <span>{alunos.length} alunos matriculados</span>
                               </div>
@@ -364,7 +364,7 @@ export function ProfessorPage() {
               <div className="flex flex-col">
                 <h1 className="text-2xl font-bold">{currentDiario.nome}</h1>
                 <div className="flex items-center gap-2 mt-1">
-    <span className="text-sm text-muted-foreground">
+    <span className="text-base text-muted-foreground">
       {(currentDiario as any).bimestreAtual
         ? `${(currentDiario as any).bimestreAtual}º Bimestre`
         : (currentDiario as any).bimestre

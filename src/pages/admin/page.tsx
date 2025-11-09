@@ -27,7 +27,7 @@ export function AdminPage() {
             <h1 className="text-2xl font-bold">
               Painel Administrativo
             </h1>
-            <p className="text-sm text-muted-foreground">
+            <p className="text-base text-muted-foreground">
               Gerencie usuários, turmas e configurações
             </p>
           </div>

@@ -451,7 +451,7 @@ export function AlunoPage() {
                         <div className={`text-3xl font-bold ${getFrequenciaColor(item.frequencia)}`}>
                           {item.frequencia > 0 ? item.frequencia.toFixed(1) + '%' : '-'}
                         </div>
-                        <div className="text-sm text-muted-foreground">
+                        <div className="text-base text-muted-foreground">
                           Frequência
                         </div>
                       </div>
@@ -516,7 +516,7 @@ export function AlunoPage() {
                           >
                             <div>
                               <p className="font-medium text-foreground">{avaliacao.titulo}</p>
-                              <p className="text-sm text-muted-foreground">
+                              <p className="text-base text-muted-foreground">
                                 {disciplina?.nome} • {formatDate(avaliacao.data)} • Peso: {avaliacao.peso}
                               </p>
                             </div>
@@ -567,12 +567,12 @@ export function AlunoPage() {
                               <div key={`proxima-${avaliacao.id}`} className="flex items-center justify-between p-3 bg-muted rounded-lg">
                                 <div>
                                   <div className="font-medium">{avaliacao.titulo}</div>
-                                  <div className="text-sm text-muted-foreground">
+                                  <div className="text-base text-muted-foreground">
                                     {disciplina?.nome} • Peso: {avaliacao.peso} • Tipo: {avaliacao.tipo}
                                   </div>
                                 </div>
                                 <div className="text-right">
-                                  <div className="flex items-center gap-1 text-sm text-muted-foreground">
+                                  <div className="flex items-center gap-1 text-base text-muted-foreground">
                                     <Calendar className="h-4 w-4" />
                                     {formatDate(avaliacao.data)}
                                   </div>
@@ -624,19 +624,19 @@ export function AlunoPage() {
                           <Badge variant={getOcorrenciaColor(ocorrencia.tipo)}>
                             {ocorrencia.tipo === 'disciplinar' ? 'Disciplinar' : 'Pedagógica'}
                           </Badge>
-                          <span className="text-sm text-muted-foreground">
+                          <span className="text-base text-muted-foreground">
                             {formatDate(ocorrencia.data)}
                           </span>
                         </div>
 
                         <div>
                           <h4 className="font-medium text-foreground mb-1">Descrição:</h4>
-                          <p className="text-sm text-muted-foreground">{ocorrencia.descricao}</p>
+                          <p className="text-base text-muted-foreground">{ocorrencia.descricao}</p>
                         </div>
 
                         <div>
                           <h4 className="font-medium text-foreground mb-1">Ação Tomada:</h4>
-                          <p className="text-sm text-muted-foreground">{ocorrencia.acaoTomada}</p>
+                          <p className="text-base text-muted-foreground">{ocorrencia.acaoTomada}</p>
                         </div>
                       </div>
                     ))}
@@ -670,7 +670,7 @@ export function AlunoPage() {
                 <h1 className="text-2xl font-semibold text-foreground">
                   Área do Aluno
                 </h1>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-base text-muted-foreground">
                   Bem-vindo, {aluno.nome}
                 </p>
               </div>
