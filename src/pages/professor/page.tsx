@@ -143,12 +143,14 @@ export function ProfessorPage() {
           <div>
             <h1 className="text-2xl font-bold">{currentDiario.nome}</h1>
             <div className="flex items-center gap-2 mt-1">
-              <span className="text-sm font-medium text-primary">{disciplina?.nome || 'Disciplina'}</span>
-              <span className="text-sm text-muted-foreground">•</span>
-              <span className="text-sm text-muted-foreground">{turma?.nome || 'Turma'}</span>
-              <span className="text-sm text-muted-foreground">•</span>
-              <span className="text-sm text-muted-foreground">{currentDiario.bimestre}º Bimestre</span>
-            </div>
+    <span className="text-sm text-muted-foreground">
+      {(currentDiario as any).bimestreAtual
+        ? `${(currentDiario as any).bimestreAtual}º Bimestre`
+        : (currentDiario as any).bimestre
+        ? `${(currentDiario as any).bimestre}º Bimestre`
+        : 'Bimestre não definido'}
+    </span>
+  </div>
           </div>
         </div>
       </div>
@@ -344,7 +346,6 @@ export function ProfessorPage() {
     );
   }
 
-  // Tela principal do diário selecionado ou aba de recados
   return (
     <ErrorBoundary>
       <div className="min-h-screen flex flex-col bg-background">
@@ -352,17 +353,14 @@ export function ProfessorPage() {
         <header className="sticky top-0 z-50 border-b bg-card px-6 py-4 flex-shrink-0 h-20 flex items-center">
           <div className="flex items-center justify-between w-full">
             <div className="flex items-center gap-6">
-              {activeTab !== 'recados' && (
                 <Button
                   variant="outline"
                   size="icon"
                   onClick={handleBackToDiarios}
                   className="h-9 w-9 border-border hover:bg-muted"
-                  title="Voltar aos Diários"
-                >
+                  title="Voltar aos Diários">
                   <ArrowLeft className="h-4 w-4" />
                 </Button>
-              )}
               
               <div className="flex flex-col">
                 <h1 className="text-2xl font-semibold text-foreground">
