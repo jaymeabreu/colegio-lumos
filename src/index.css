@@ -217,7 +217,7 @@
 }
 
 .card-description {
-  @apply text-sm;
+  @apply text-base;
   color: var(--muted-foreground);
 }
 
