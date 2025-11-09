@@ -368,7 +368,23 @@ export function ProfessorPage() {
                 <h1 className="text-2xl font-semibold text-foreground">
                   {activeTab === 'recados' ? 'Recados' : (currentDiario?.nome || 'Diário')}
                 </h1>
-                
+                <div className="flex items-center gap-2 mt-1">
+    <span className="text-sm font-medium text-primary">
+      {currentDiario.disciplina || 'Disciplina'}
+    </span>
+    <span className="text-sm text-muted-foreground">•</span>
+    <span className="text-sm text-muted-foreground">
+      {currentDiario.turma || 'Turma'}
+    </span>
+    <span className="text-sm text-muted-foreground">•</span>
+    <span className="text-sm text-muted-foreground">
+      {(currentDiario as any).bimestreAtual
+        ? `${(currentDiario as any).bimestreAtual}º Bimestre`
+        : (currentDiario as any).bimestre
+        ? `${(currentDiario as any).bimestre}º Bimestre`
+        : 'Bimestre não definido'}
+    </span>
+  </div>
               </div>
             </div>
             <AuthHeader />
