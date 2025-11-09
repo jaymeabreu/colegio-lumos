@@ -407,7 +407,7 @@ export function AlunosList() {
     <div className="card">
       <div className="card-header">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
+          <div class="space-y-2">
             <h3 className="card-title">Alunos</h3>
             <p className="card-description">Gerencie os alunos da escola</p>
           </div>

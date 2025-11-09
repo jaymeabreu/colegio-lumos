@@ -80,11 +80,11 @@ export function TurmasList() {
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <div>
-            <CardTitle>Turmas</CardTitle>
-            <CardDescription>
+          <div class="space-y-2">
+            <h3 className="card-title">Turmas</h3>
+            <p className="card-description">
               Gerencie as turmas da escola
-            </CardDescription>
+            </p>
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>

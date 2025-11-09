@@ -81,11 +81,11 @@ export function DisciplinasList() {
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <div>
-            <CardTitle>Disciplinas</CardTitle>
-            <CardDescription>
+          <div class="space-y-2">
+            <h3 className="card-title">Disciplinas</h3>
+            <p className="card-description">
               Gerencie as disciplinas da escola
-            </CardDescription>
+            </p>
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>

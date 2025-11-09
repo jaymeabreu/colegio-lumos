@@ -234,9 +234,11 @@ export function UsuariosList() {
     <Card>
       <CardHeader>
         <div className="flex items-center justify-between">
-          <div>
-            <CardTitle>Usuários</CardTitle>
-            <CardDescription>Gerencie os usuários do sistema</CardDescription>
+          <div class="space-y-2">
+            <h3 className="card-title">Usuários</h3>
+            <p className="card-description">
+              Gerencie os usuários do sistema
+            </p>
           </div>
 
           <Dialog
