@@ -368,21 +368,7 @@ export function ProfessorPage() {
                 <h1 className="text-2xl font-semibold text-foreground">
                   {activeTab === 'recados' ? 'Recados' : (currentDiario?.nome || 'Diário')}
                 </h1>
-                {currentDiario && activeTab !== 'recados' && (
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-sm font-medium text-primary">
-                      {currentDiario.disciplina}
-                    </span>
-                    <span className="text-sm text-muted-foreground">•</span>
-                    <span className="text-sm text-muted-foreground">
-                      {currentDiario.turma}
-                    </span>
-                    <span className="text-sm text-muted-foreground">•</span>
-                    <span className="text-sm text-muted-foreground">
-                      {currentDiario.bimestreAtual}º Bimestre
-                    </span>
-                  </div>
-                )}
+                
               </div>
             </div>
             <AuthHeader />
