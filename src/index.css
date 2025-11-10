@@ -116,7 +116,7 @@
   --card: #1e293b;
   --card-foreground: #f8fafc;
   
-  --primary: #3b82f6;
+  --primary: #22566E;
   --primary-hover: #2563eb;
   --primary-active: #1d4ed8;
 }
@@ -429,7 +429,7 @@
 }
 
 .dialog-description {
-  @apply text-sm;
+  @apply text-base;
   color: var(--muted-foreground);
 }
 
