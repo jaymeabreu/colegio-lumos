@@ -315,6 +315,7 @@ export function AvaliacoesTab({ diarioId, readOnly = false }: AvaliacoesTabProps
                     variant="outline"
                     size="sm"
                     onClick={() => handleEditNotas(avaliacao)}
+                    className="inline-flex items-center gap-1 whitespace-nowrap"
                   >
                     <GraduationCap className="h-4 w-4" />
                   Nota

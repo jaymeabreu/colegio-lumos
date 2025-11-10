@@ -529,6 +529,7 @@ export function AulasTab({ diarioId, readOnly = false }: AulasTabProps) {
                     variant="outline"
                     size="sm"
                     onClick={() => handlePresencas(aula)}
+                    className="inline-flex items-center gap-1 whitespace-nowrap"
                   >
                     <Users className="h-4 w-4" />
                     Presença
