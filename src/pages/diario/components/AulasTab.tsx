@@ -528,18 +528,18 @@ export function AulasTab({ diarioId, readOnly = false }: AulasTabProps) {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => handleEdit(aula)}
-                  >
-                    <Edit className="h-4 w-4" />
-                  </Button>
-                  
-                  <Button
-                    variant="outline"
-                    size="sm"
                     onClick={() => handlePresencas(aula)}
                   >
                     <Users className="h-4 w-4" />
                     Presença
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleEdit(aula)}
+                  >
+                    <Edit className="h-4 w-4" />
                   </Button>
 
                   <Button

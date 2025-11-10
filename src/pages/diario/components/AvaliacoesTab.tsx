@@ -314,20 +314,20 @@ export function AvaliacoesTab({ diarioId, readOnly = false }: AvaliacoesTabProps
                   <Button
                     variant="outline"
                     size="sm"
+                    onClick={() => handleEditNotas(avaliacao)}
+                  >
+                    <GraduationCap className="h-4 w-4" />
+                  Nota
+                  </Button>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
                     onClick={() => handleEdit(avaliacao)}
                   >
                     <Edit className="h-4 w-4" />
                   </Button>
                   
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={() => handleEditNotas(avaliacao)}
-                  >
-                    <GraduationCap className="h-4 w-4" />
-                    Nota
-                  </Button>
-
                   <Button
                     variant="destructive"
                     size="sm"
