@@ -590,7 +590,7 @@ export function AulasTab({ diarioId, readOnly = false }: AulasTabProps) {
                     alunos.forEach(aluno => delete novo[`${aluno.id}-2`]);
                     setPresencas(novo);
                   }}
-                  className="btn btn-sm"
+                  className="btn btn-none"
                 >
                   1 Aula
                 </Button>
@@ -607,7 +607,7 @@ export function AulasTab({ diarioId, readOnly = false }: AulasTabProps) {
                     });
                     setPresencas(novo);
                   }}
-                  className="btn btn-sm"
+                  className="btn btn-none"
                 >
                   2 Aulas
                 </Button>
@@ -638,7 +638,7 @@ export function AulasTab({ diarioId, readOnly = false }: AulasTabProps) {
                     <Button
                       type="button"
                       variant={presencas[`${aluno.id}-1`] === 'PRESENTE' ? 'default' : 'outline'}
-                      size="sm"
+                      size="none"
                       onClick={() => handlePresencaChange(aluno.id, 1, 'PRESENTE')}
                       className="h-8 w-8 p-0"
                     >
@@ -647,7 +647,7 @@ export function AulasTab({ diarioId, readOnly = false }: AulasTabProps) {
                     <Button
                       type="button"
                       variant={presencas[`${aluno.id}-1`] === 'FALTA' ? 'destructive' : 'outline'}
-                      size="sm"
+                      size="none"
                       onClick={() => handlePresencaChange(aluno.id, 1, 'FALTA')}
                       className="h-8 w-8 p-0"
                     >
@@ -656,7 +656,7 @@ export function AulasTab({ diarioId, readOnly = false }: AulasTabProps) {
                     <Button
                       type="button"
                       variant={presencas[`${aluno.id}-1`] === 'JUSTIFICADA' ? 'secondary' : 'outline'}
-                      size="sm"
+                      size="none"
                       onClick={() => handlePresencaChange(aluno.id, 1, 'JUSTIFICADA')}
                       className="h-8 px-2 text-xs"
                     >
@@ -670,7 +670,7 @@ export function AulasTab({ diarioId, readOnly = false }: AulasTabProps) {
                       <Button
                         type="button"
                         variant={presencas[`${aluno.id}-2`] === 'PRESENTE' ? 'default' : 'outline'}
-                        size="sm"
+                        size="none"
                         onClick={() => handlePresencaChange(aluno.id, 2, 'PRESENTE')}
                         className="h-8 w-8 p-0"
                       >
@@ -679,7 +679,7 @@ export function AulasTab({ diarioId, readOnly = false }: AulasTabProps) {
                       <Button
                         type="button"
                         variant={presencas[`${aluno.id}-2`] === 'FALTA' ? 'destructive' : 'outline'}
-                        size="sm"
+                        size="none"
                         onClick={() => handlePresencaChange(aluno.id, 2, 'FALTA')}
                         className="h-8 w-8 p-0"
                       >
@@ -688,7 +688,7 @@ export function AulasTab({ diarioId, readOnly = false }: AulasTabProps) {
                       <Button
                         type="button"
                         variant={presencas[`${aluno.id}-2`] === 'JUSTIFICADA' ? 'secondary' : 'outline'}
-                        size="sm"
+                        size="none"
                         onClick={() => handlePresencaChange(aluno.id, 2, 'JUSTIFICADA')}
                         className="h-8 px-2 text-xs"
                       >
