@@ -346,7 +346,7 @@ export function AvaliacoesTab({ diarioId, readOnly = false }: AvaliacoesTabProps
 
       {/* Dialog para Editar Notas */}
       <Dialog open={isNotasDialogOpen} onOpenChange={setIsNotasDialogOpen}>
-        <DialogContent className="sm:max-w-[600px] max-h-[80vh] overflow-y-auto">
+        <DialogContent className="max-w-[95vw] lg:max-w-[800px] max-h-[95vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>
               Notas - {selectedAvaliacao?.titulo}

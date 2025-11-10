@@ -137,15 +137,7 @@ export function AlunosTab({ diarioId, readOnly = false }: AlunosTabProps) {
                   </div>
                 </div>
               </div>
-              <div className="flex items-center gap-2 flex-shrink-0">
-                <Button
-                  variant="outline"
-                  className="btn btn-outline h-8 w-8"
-                  onClick={() => handleViewDetails(aluno)}
-                >
-                  <Eye className="h-4 w-4" />
-                </Button>
-              </div>
+              
 
               {/* Botão adicional "Ver Boletim" conforme modificação */}
               <div className="flex items-center gap-2 flex-shrink-0">
