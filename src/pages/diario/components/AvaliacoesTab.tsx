@@ -187,7 +187,7 @@ export function AvaliacoesTab({ diarioId, readOnly = false }: AvaliacoesTabProps
                   <span className="hidden sm:inline">Nova Avaliação</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
+              <DialogContent className="max-w-[95vw] lg:max-w-[800px] max-h-[95vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>
                     {editingAvaliacao ? 'Editar Avaliação' : 'Nova Avaliação'}

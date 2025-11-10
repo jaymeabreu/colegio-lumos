@@ -147,7 +147,7 @@ export function OcorrenciasTab({ diarioId, readOnly = false }: OcorrenciasTabPro
                   <span className="hidden sm:inline">Nova Ocorrência</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
+              <DialogContent className="max-w-[95vw] lg:max-w-[800px] max-h-[95vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>
                     {editingOcorrencia ? 'Editar Ocorrência' : 'Nova Ocorrência'}
