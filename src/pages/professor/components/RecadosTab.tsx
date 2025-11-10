@@ -415,7 +415,7 @@ export function RecadosTab() {
             {recados.map(recado => (
               <div
                 key={recado.id}
-                className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 p-4 border rounded-lg"
+                className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 p-4 border rounded-lg"
               >
                 <div className="flex-1">
                   <h3 className="font-medium">{recado.titulo}</h3>

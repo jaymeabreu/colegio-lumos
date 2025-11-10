@@ -238,7 +238,7 @@ export function OcorrenciasTab({ diarioId, readOnly = false }: OcorrenciasTabPro
         </div>
         <div className="space-y-4">
           {filteredOcorrencias.map((ocorrencia) => (
-            <div key={ocorrencia.id} className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 p-4 border rounded-lg">
+            <div key={ocorrencia.id} className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 p-4 border rounded-lg">
               <div className="flex-1">
                 <div className="flex items-center gap-2 mb-1">
                   <h3 className="font-medium">{getAlunoNome(ocorrencia.alunoId)}</h3>

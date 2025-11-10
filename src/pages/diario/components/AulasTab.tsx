@@ -493,7 +493,7 @@ export function AulasTab({ diarioId, readOnly = false }: AulasTabProps) {
           {filteredAulas.map(aula => (
             <div
               key={aula.id}
-              className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-4 p-4 border rounded-lg"
+              className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 p-4 border rounded-lg"
             >
               <div className="flex-1">
                 <h3 className="font-medium">{aula.conteudo}</h3>
