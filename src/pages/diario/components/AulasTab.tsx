@@ -330,7 +330,7 @@ export function AulasTab({ diarioId, readOnly = false }: AulasTabProps) {
                   <span className="hidden sm:inline">Nova Aula</span>
                 </Button>
               </DialogTrigger>
-              <DialogContent className="max-w-[95vw] lg:max-w-[1000px] max-h-[95vh] overflow-y-auto">
+              <DialogContent className="max-w-[95vw] lg:max-w-[800px] max-h-[95vh] overflow-y-auto">
                 <DialogHeader>
                   <DialogTitle>
                     {editingAula ? 'Editar Aula' : 'Nova Aula'}

@@ -419,7 +419,7 @@ export function AlunosList() {
                 <span className="hidden sm:inline">Novo Aluno</span>
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-[95vw] lg:max-w-[800px]">
+            <DialogContent className="max-w-[95vw] lg:max-w-[800px] max-h-[95vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>
                   {editingAluno ? 'Editar Aluno' : 'Novo Aluno'}

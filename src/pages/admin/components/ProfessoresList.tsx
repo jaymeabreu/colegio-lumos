@@ -427,7 +427,7 @@ export function ProfessoresList() {
                 <span className="hidden sm:inline">Novo Professor</span>
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-[95vw] lg:max-w-[1400px] max-h-[95vh] overflow-y-auto">
+            <DialogContent className="max-w-[95vw] lg:max-w-[800px] max-h-[95vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>
                   {editingProfessor ? 'Editar Professor' : 'Novo Professor'}

@@ -191,7 +191,7 @@ export function ComunicadosList() {
                 <span className="hidden sm:inline">Novo Comunicado</span>
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-[95vw] lg:max-w-[800px]">
+            <DialogContent className="max-w-[95vw] lg:max-w-[800px] max-h-[95vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>
                   {editingComunicado ? 'Editar Comunicado' : 'Novo Comunicado'}
