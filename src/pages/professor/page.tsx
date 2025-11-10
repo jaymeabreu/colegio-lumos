@@ -274,12 +274,12 @@ export function ProfessorPage() {
                           <CardHeader className="pb-3">
                             <div className="flex items-start justify-between">
                               <div className="flex-1">
-                                <div className="flex items-center gap-2 mb-2">
+                                <div className="flex items-center gap-2">
                                   <CardTitle className="text-lg group-hover:text-primary transition-colors">
                                     {diario.nome}
                                   </CardTitle>
                                 </div>
-                                <div className="flex items-center gap-2 mb-2">
+                                <div className="flex items-center gap-2">
                                   <div className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium border ${statusInfo.color}`}>
                                     {statusInfo.label}
                                   </div>

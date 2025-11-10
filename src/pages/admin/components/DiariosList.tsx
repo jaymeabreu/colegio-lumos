@@ -312,25 +312,23 @@ export function DiariosList() {
               <form onSubmit={handleSubmit}>
                 <div className="space-y-4">
                   <div>
-                    <Label htmlFor="nome">Nome do Diário *</Label>
                     <Input
                       id="nome"
                       value={formData.nome}
                       onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-                      placeholder="Ex: Matemática - 1º Ano A - 1º Bimestre"
+                      placeholder="Nome do Diário"
                       required
                     />
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="disciplina">Disciplina *</Label>
                       <Select 
                         value={formData.disciplinaId} 
                         onValueChange={(value) => setFormData({ ...formData, disciplinaId: value })}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Selecione uma disciplina" />
+                          <SelectValue placeholder="Disciplina" />
                         </SelectTrigger>
                         <SelectContent>
                           {disciplinas.map((disciplina) => (
@@ -343,13 +341,12 @@ export function DiariosList() {
                     </div>
 
                     <div>
-                      <Label htmlFor="turma">Turma *</Label>
                       <Select 
                         value={formData.turmaId} 
                         onValueChange={(value) => setFormData({ ...formData, turmaId: value })}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Selecione uma turma" />
+                          <SelectValue placeholder="Turma" />
                         </SelectTrigger>
                         <SelectContent>
                           {turmas.map((turma) => (
@@ -364,13 +361,12 @@ export function DiariosList() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="professor">Professor *</Label>
                       <Select 
                         value={formData.professorId} 
                         onValueChange={(value) => setFormData({ ...formData, professorId: value })}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Selecione um professor" />
+                          <SelectValue placeholder="Professor" />
                         </SelectTrigger>
                         <SelectContent>
                           {professores.map((professor) => (
@@ -383,13 +379,12 @@ export function DiariosList() {
                     </div>
 
                     <div>
-                      <Label htmlFor="bimestre">Bimestre *</Label>
                       <Select 
                         value={formData.bimestre} 
                         onValueChange={(value) => setFormData({ ...formData, bimestre: value })}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Selecione o bimestre" />
+                          <SelectValue placeholder="Bimestre" />
                         </SelectTrigger>
                         <SelectContent>
                           <SelectItem value="1">1º Bimestre</SelectItem>
@@ -403,7 +398,7 @@ export function DiariosList() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="dataInicio">Data de Início *</Label>
+                      <Label htmlFor="dataInicio">Data de Início</Label>
                       <Input
                         id="dataInicio"
                         type="date"
@@ -414,7 +409,7 @@ export function DiariosList() {
                     </div>
 
                     <div>
-                      <Label htmlFor="dataTermino">Data de Término *</Label>
+                      <Label htmlFor="dataTermino">Data de Término</Label>
                       <Input
                         id="dataTermino"
                         type="date"
