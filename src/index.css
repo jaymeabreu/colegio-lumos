@@ -246,10 +246,14 @@
   box-shadow: 0 0 0 2px rgba(34, 86, 110, 0.2);
 }
 
-.input::placeholder,
-.textarea::placeholder {
+.input::placeholder {
   color: #A2A2A2; 
   opacity: 1; 
+}
+
+.textarea::placeholder {
+  color: #A2A2A2; 
+  opacity: 0.5; 
 }
 
 .textarea {
