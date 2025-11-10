@@ -315,7 +315,7 @@ export function AulasTab({ diarioId, readOnly = false }: AulasTabProps) {
     <Card>
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
+          <div class="space-y-2">
             <CardTitle>Aulas Ministradas</CardTitle>
             <CardDescription>
               Registre as aulas ministradas e gerencie a presença dos alunos

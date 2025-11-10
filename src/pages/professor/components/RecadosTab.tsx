@@ -249,7 +249,7 @@ export function RecadosTab() {
     <Card>
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
+          <div class="space-y-2">
             <CardTitle>Recados</CardTitle>
             <CardDescription>
               Envie recados individuais ou para toda a turma

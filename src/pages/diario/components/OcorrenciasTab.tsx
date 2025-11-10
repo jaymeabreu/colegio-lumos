@@ -132,7 +132,7 @@ export function OcorrenciasTab({ diarioId, readOnly = false }: OcorrenciasTabPro
     <Card>
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
+          <div class="space-y-2">
             <CardTitle>Ocorrências</CardTitle>
             <CardDescription>
               Registre ocorrências disciplinares e pedagógicas

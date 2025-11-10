@@ -74,7 +74,7 @@ export function AlunosTab({ diarioId, readOnly = false }: AlunosTabProps) {
     <Card>
       <CardHeader>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-          <div>
+          <div class="space-y-2">
             <CardTitle>Alunos da Turma</CardTitle>
             <CardDescription>
               Visualize informações e desempenho dos alunos
