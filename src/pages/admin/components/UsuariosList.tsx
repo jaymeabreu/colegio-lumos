@@ -263,7 +263,7 @@ export function UsuariosList() {
               </Button>
             </DialogTrigger>
 
-            <DialogContent>
+            <DialogContent className="max-w-[95vw] lg:max-w-[800px] max-h-[95vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>
                   {editingUsuario ? 'Editar usuário' : 'Novo usuário'}

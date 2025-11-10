@@ -93,7 +93,7 @@ export function TurmasList() {
                 Nova Turma
               </Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-w-[95vw] lg:max-w-[800px] max-h-[95vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>
                   {editingTurma ? 'Editar Turma' : 'Nova Turma'}
