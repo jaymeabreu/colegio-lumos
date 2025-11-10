@@ -300,7 +300,7 @@ export function DiariosList() {
                 <span className="hidden sm:inline">Novo Diário</span>
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-w-2xl">
+            <DialogContent className="max-w-[95vw] lg:max-w-[800px] max-h-[95vh] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle>
                   {editingDiario ? 'Editar Diário' : 'Novo Diário'}
