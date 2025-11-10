@@ -423,7 +423,7 @@
 }
 
 .dialog-title {
-  @apply text-lg font-semibold leading-none tracking-tight;
+  @apply text-2xl font-semibold leading-none tracking-tight;
   color: var(--foreground);
   font-weight: var(--font-weight-semibold);
 }
@@ -667,7 +667,7 @@
 @media (max-width: 480px) {
   :root {
     --header-height: 48px;
-    --font-size-base: 14px;
+    --font-size-base: 16px;
     --spacing-4: 8px;
     --spacing-6: 12px;
     --spacing-8: 16px;
