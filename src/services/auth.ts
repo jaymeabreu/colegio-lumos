@@ -1,13 +1,13 @@
+import { safeStorage } from '@/lib/safeStorage';
 
 export interface User {
   id: number;
   nome: string;
   email: string;
   papel: 'COORDENADOR' | 'PROFESSOR' | 'ALUNO';
-  alunoId?: number;     // Para usuários do tipo ALUNO
-  professorId?: number; // Para usuários do tipo PROFESSOR
+  alunoId?: number;
+  professorId?: number;
 }
-
 
 export interface AuthState {
   user: User | null;
@@ -23,16 +23,14 @@ class AuthService {
   getAuthState(): AuthState {
     if (!MOCK_MODE) return { user: null, isAuthenticated: false };
     
-    // Usar cache se disponível para evitar re-reads desnecessários
     if (this.cachedAuthState) {
       return this.cachedAuthState;
     }
     
     try {
-      const stored = localStorage.getItem(this.storageKey);
+      const stored = safeStorage.getItem(this.storageKey);
       if (stored) {
         const user = JSON.parse(stored);
-        // Validação básica do objeto user
         if (user && user.id && user.email && user.papel) {
           this.cachedAuthState = { user, isAuthenticated: true };
           return this.cachedAuthState;
@@ -40,7 +38,7 @@ class AuthService {
       }
     } catch (error) {
       console.error('Erro ao ler auth do localStorage:', error);
-      localStorage.removeItem(this.storageKey);
+      safeStorage.removeItem(this.storageKey);
     }
     
     this.cachedAuthState = { user: null, isAuthenticated: false };
@@ -49,7 +47,7 @@ class AuthService {
 
   private getUsuariosFromStorage() {
     try {
-      const stored = localStorage.getItem('gestao_escolar_data');
+      const stored = safeStorage.getItem('gestao_escolar_data');
       if (stored) {
         const data = JSON.parse(stored);
         return data.usuarios || [];
@@ -62,7 +60,7 @@ class AuthService {
 
   private getSenhasFromStorage() {
     try {
-      const stored = localStorage.getItem('gestao_escolar_senhas');
+      const stored = safeStorage.getItem('gestao_escolar_senhas');
       if (stored) {
         return JSON.parse(stored);
       }
@@ -77,78 +75,73 @@ class AuthService {
       return { success: false, error: 'Modo mock desabilitado' };
     }
 
-    // Buscar usuários do sistema administrativo
     const usuarios = this.getUsuariosFromStorage();
     const senhas = this.getSenhasFromStorage();
 
-    // Usuários padrão do sistema (para compatibilidade)
     const usuariosPadrao = [
-  {
-    id: 1,
-    nome: 'Coordenador Sistema',
-    email: 'coordenador@demo.com',
-    senha: '123456',
-    papel: 'COORDENADOR' as const
-  },
-  {
-    id: 2,
-    nome: 'Professor História',
-    email: 'prof@demo.com',
-    senha: '123456',
-    papel: 'PROFESSOR' as const,
-    professorId: 1 // <- IMPORTANTE: bate com o professorId do mockData
-  },
-  {
-    id: 3,
-    nome: 'Ana Clara Santos',
-    email: 'aluno@demo.com',
-    senha: '123456',
-    papel: 'ALUNO' as const,
-    alunoId: 1
-  }
-];
+      {
+        id: 1,
+        nome: 'Coordenador Sistema',
+        email: 'coordenador@demo.com',
+        senha: '123456',
+        papel: 'COORDENADOR' as const
+      },
+      {
+        id: 2,
+        nome: 'Professor História',
+        email: 'prof@demo.com',
+        senha: '123456',
+        papel: 'PROFESSOR' as const,
+        professorId: 1
+      },
+      {
+        id: 3,
+        nome: 'Ana Clara Santos',
+        email: 'aluno@demo.com',
+        senha: '123456',
+        papel: 'ALUNO' as const,
+        alunoId: 1
+      }
+    ];
 
-
-    // Primeiro, verificar usuários padrão
     let usuario = usuariosPadrao.find(u => u.email === email && u.senha === senha);
     
-    // Se não encontrou nos padrão, verificar nos usuários criados no sistema
     if (!usuario) {
-  const usuarioSistema = usuarios.find((u: any) => u.email === email);
-  if (usuarioSistema) {
-    const senhaArmazenada = senhas[usuarioSistema.id];
-    if (senhaArmazenada === senha) {
-      usuario = {
-        id: usuarioSistema.id,
-        nome: usuarioSistema.nome,
-        email: usuarioSistema.email,
-        senha: senhaArmazenada,
-        papel: usuarioSistema.papel,
-        alunoId: usuarioSistema.alunoId,
-        professorId: usuarioSistema.professorId
-      };
+      const usuarioSistema = usuarios.find((u: any) => u.email === email);
+      if (usuarioSistema) {
+        const senhaArmazenada = senhas[usuarioSistema.id];
+        if (senhaArmazenada === senha) {
+          usuario = {
+            id: usuarioSistema.id,
+            nome: usuarioSistema.nome,
+            email: usuarioSistema.email,
+            senha: senhaArmazenada,
+            papel: usuarioSistema.papel,
+            alunoId: usuarioSistema.alunoId,
+            professorId: usuarioSistema.professorId
+          };
+        }
+      }
     }
-  }
-}
-
     
     if (!usuario) {
       return { success: false, error: 'Email ou senha inválidos' };
     }
 
     const user: User = {
-  id: usuario.id,
-  nome: usuario.nome,
-  email: usuario.email,
-  papel: usuario.papel,
-  alunoId: usuario.alunoId,
-  professorId: usuario.professorId
-};
-
+      id: usuario.id,
+      nome: usuario.nome,
+      email: usuario.email,
+      papel: usuario.papel,
+      alunoId: usuario.alunoId,
+      professorId: usuario.professorId
+    };
 
     try {
-      localStorage.setItem(this.storageKey, JSON.stringify(user));
-      // Atualizar cache
+      const saved = safeStorage.setItem(this.storageKey, JSON.stringify(user));
+      if (!saved) {
+        console.warn('Não foi possível salvar no localStorage, usando apenas cache de sessão');
+      }
       this.cachedAuthState = { user, isAuthenticated: true };
       return { success: true, user };
     } catch (error) {
@@ -159,8 +152,7 @@ class AuthService {
 
   logout(): void {
     try {
-      localStorage.removeItem(this.storageKey);
-      // Limpar cache
+      safeStorage.removeItem(this.storageKey);
       this.cachedAuthState = null;
     } catch (error) {
       console.error('Erro ao limpar auth do localStorage:', error);
@@ -186,7 +178,6 @@ class AuthService {
   }
 
   canAccessDiario(userId: number, diarioId: number): boolean {
-    // Mock: Professor só acessa diário ID 1
     if (userId === 2 && diarioId === 1) return true;
     return false;
   }
