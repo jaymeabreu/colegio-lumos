@@ -273,7 +273,7 @@ export function ProfessorPage() {
                         >
                           <CardHeader className="pb-3">
                             <div className="flex items-start justify-between">
-                              <div className="flex-1">
+                              <div className="space-y-3">
                                 <div className="flex items-center gap-2">
                                   <CardTitle className="text-lg group-hover:text-primary transition-colors">
                                     {diario.nome}
